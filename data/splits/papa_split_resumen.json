@@ -1,0 +1,53 @@
+{
+  "total_original": 3076,
+  "total": 3015,
+  "hamming": 4,
+  "seed": 42,
+  "duplicados_exactos": 110,
+  "eliminadas_conflicto": 12,
+  "eliminadas_repetidas": 49,
+  "en_grupos_casi_duplicados": 64,
+  "grupos_conflicto": 0,
+  "por_clase_y_split": {
+    "train": {
+      "bacteria": 397,
+      "fungi": 518,
+      "healthy": 139,
+      "nematode": 47,
+      "pest": 421,
+      "phytophthora": 217,
+      "virus": 373,
+      "All": 2112
+    },
+    "val": {
+      "bacteria": 86,
+      "fungi": 110,
+      "healthy": 30,
+      "nematode": 10,
+      "pest": 90,
+      "phytophthora": 46,
+      "virus": 78,
+      "All": 450
+    },
+    "test": {
+      "bacteria": 86,
+      "fungi": 112,
+      "healthy": 30,
+      "nematode": 10,
+      "pest": 90,
+      "phytophthora": 46,
+      "virus": 79,
+      "All": 453
+    },
+    "All": {
+      "bacteria": 569,
+      "fungi": 740,
+      "healthy": 199,
+      "nematode": 67,
+      "pest": 601,
+      "phytophthora": 309,
+      "virus": 530,
+      "All": 3015
+    }
+  }
+}

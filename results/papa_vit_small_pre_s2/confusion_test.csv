@@ -1,0 +1,8 @@
+,bacteria,fungi,healthy,nematode,pest,phytophthora,virus
+bacteria,83,3,0,0,0,0,0
+fungi,2,101,0,1,4,2,2
+healthy,0,0,26,0,1,0,3
+nematode,0,2,0,7,1,0,0
+pest,1,7,1,0,80,1,0
+phytophthora,1,6,0,0,1,38,0
+virus,2,4,6,0,2,0,65

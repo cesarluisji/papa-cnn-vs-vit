@@ -1,0 +1,28 @@
+# datos pesados: se descargan con  python src/download_data.py
+data/raw/
+data/processed/
+data/splits_verificacion/
+# pesos: se publican como Release de GitHub (ver README)
+*.pt
+*.pth
+# cachés y artefactos grandes regenerables
+results/rf_features.npz
+results/gradcam/cams.npz
+results/_descartado*/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+# archivos locales de trabajo
+colab_bundle.zip
+ExamenFinal_MIA_203.pdf
+PROYECTO_ESTADO.md
+mantener_activo.ps1
+results/logs/gpu_noche.log
+paper/build/
+*.aux
+*.log
+!results/logs/**/*.log
+*.out
+*.synctex.gz
+*.bbl
+*.blg

@@ -1,0 +1,30 @@
+{
+  "run": "papa_vit_small_pre_s1",
+  "model": "vit_small",
+  "pretrained": true,
+  "seed": 1,
+  "best_epoch": 17,
+  "epochs_run": 40,
+  "val": {
+    "macro_f1": 0.9175158953366644,
+    "balanced_acc": 0.9154439987604801,
+    "accuracy": 0.9066666666666666
+  },
+  "test": {
+    "macro_f1": 0.8392534944061083,
+    "balanced_acc": 0.8398790133008489,
+    "accuracy": 0.8520971302428256
+  },
+  "test_f1_por_clase": {
+    "bacteria": 0.9491525423728814,
+    "fungi": 0.8333333333333334,
+    "healthy": 0.819672131147541,
+    "nematode": 0.7619047619047619,
+    "pest": 0.7901234567901234,
+    "phytophthora": 0.8705882352941177,
+    "virus": 0.85
+  },
+  "train_time_min": 14.46507928585,
+  "gpu_peak_mb": 1458.69140625,
+  "params": 21668359
+}

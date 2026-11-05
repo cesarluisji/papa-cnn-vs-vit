@@ -1,0 +1,62 @@
+path,original,label,w,h,sha256,motivo
+data/processed/papa_256/fungi/20230712_115043.jpg,data/raw/papa/Fungi/20230712_115043.jpg,fungi,1500,1500,876817d09363fed6dfa7e9d59ac4151e3807b588f711f6e667f95834d70926a1,misma imagen en 2 clases (etiqueta contradictoria)
+data/processed/papa_256/fungi/20230712_150155.jpg,data/raw/papa/Fungi/20230712_150155.jpg,fungi,1500,1500,db82b2d1f3c522a489246212f5cc38816c415450951dc06f332f8fff09a182a2,misma imagen en 2 clases (etiqueta contradictoria)
+data/processed/papa_256/fungi/20230802_104926298.jpg,data/raw/papa/Fungi/20230802_104926298.jpg,fungi,1500,1500,d3290e0c108f4f585bee63b02daacf8abf192b1e1672b8eddba7a24caa900487,misma imagen en 2 clases (etiqueta contradictoria)
+data/processed/papa_256/healthy/20230712_130852.jpg,data/raw/papa/Healthy/20230712_130852.jpg,healthy,1500,1500,4e678603b69834e572d6889dd8b6c79d72b824bbcbb59f7fd6fe22d3e9670f3f,misma imagen en 2 clases (etiqueta contradictoria)
+data/processed/papa_256/nematode/20230712_122808.jpg,data/raw/papa/Nematode/20230712_122808.jpg,nematode,1500,1500,f30fd254ce7b7a75761197882988aaf90dff521efeb2ffbe95fdbb45cc76f986,misma imagen en 2 clases (etiqueta contradictoria)
+data/processed/papa_256/pest/20230712_115043.jpg,data/raw/papa/Pest/20230712_115043.jpg,pest,1500,1500,876817d09363fed6dfa7e9d59ac4151e3807b588f711f6e667f95834d70926a1,misma imagen en 2 clases (etiqueta contradictoria)
+data/processed/papa_256/pest/20230712_122808.jpg,data/raw/papa/Pest/20230712_122808.jpg,pest,1500,1500,f30fd254ce7b7a75761197882988aaf90dff521efeb2ffbe95fdbb45cc76f986,misma imagen en 2 clases (etiqueta contradictoria)
+data/processed/papa_256/pest/20230712_130852.jpg,data/raw/papa/Pest/20230712_130852.jpg,pest,1500,1500,4e678603b69834e572d6889dd8b6c79d72b824bbcbb59f7fd6fe22d3e9670f3f,misma imagen en 2 clases (etiqueta contradictoria)
+data/processed/papa_256/pest/20230712_150155.jpg,data/raw/papa/Pest/20230712_150155.jpg,pest,1500,1500,db82b2d1f3c522a489246212f5cc38816c415450951dc06f332f8fff09a182a2,misma imagen en 2 clases (etiqueta contradictoria)
+data/processed/papa_256/pest/20230802_104926298.jpg,data/raw/papa/Pest/20230802_104926298.jpg,pest,1500,1500,d3290e0c108f4f585bee63b02daacf8abf192b1e1672b8eddba7a24caa900487,misma imagen en 2 clases (etiqueta contradictoria)
+data/processed/papa_256/pest/IMG_20230816_115049~2.jpg,data/raw/papa/Pest/IMG_20230816_115049~2.jpg,pest,1500,1500,1bddf338c236d74b16b23f4c6a26e66e6cf9c21684e83d82df432bd8ab68ab87,misma imagen en 2 clases (etiqueta contradictoria)
+data/processed/papa_256/virus/IMG_20230816_115049~2.jpg,data/raw/papa/Virus/IMG_20230816_115049~2.jpg,virus,1500,1500,1bddf338c236d74b16b23f4c6a26e66e6cf9c21684e83d82df432bd8ab68ab87,misma imagen en 2 clases (etiqueta contradictoria)
+data/processed/papa_256/fungi/Copy of 20230712_154218.jpg,data/raw/papa/Fungi/Copy of 20230712_154218.jpg,fungi,1500,1500,6e6da05ce4d3d5b735c3df436aa2f0d98bd4a11cded502bbec2221c5f1430645,copia exacta repetida
+data/processed/papa_256/fungi/IMG_20230815_112512~2.jpg,data/raw/papa/Fungi/IMG_20230815_112512~2.jpg,fungi,1500,1500,0f4656f45581f3439cb4688e2245a5312ef524ab9103b57b1148065434aab583,copia exacta repetida
+data/processed/papa_256/fungi/IMG_20230815_122340~2.jpg,data/raw/papa/Fungi/IMG_20230815_122340~2.jpg,fungi,1500,1500,64e3f7b7cd9df71a1bb3d71701b58bb1179f6d8281105af239e0f82e3af9ce13,copia exacta repetida
+data/processed/papa_256/fungi/IMG_20230816_084638 (1).jpg,data/raw/papa/Fungi/IMG_20230816_084638 (1).jpg,fungi,1500,1500,eb88ca631a3272156686994d702527fcb779c9064107f61d9a45467a9aa51bf3,copia exacta repetida
+data/processed/papa_256/fungi/IMG_20230816_122345~2.jpg,data/raw/papa/Fungi/IMG_20230816_122345~2.jpg,fungi,1500,1500,68f50f18bb917da7969d8675d67da3a826d562ca4c5aedcae58dff38351d9850,copia exacta repetida
+data/processed/papa_256/healthy/20230712_121645.jpg,data/raw/papa/Healthy/20230712_121645.jpg,healthy,1500,1500,4e75af191c48cf87ac0ebbf191f16beca466878494c6b7cb49458e36df262714,copia exacta repetida
+data/processed/papa_256/pest/IMG_0123.JPG,data/raw/papa/Pest/IMG_0123.JPG,pest,1500,1500,36e04cd3652ca573eeba9cb43609e45efe2f08dd6b50557d2483650ab4f51a41,copia exacta repetida
+data/processed/papa_256/pest/IMG_0205.JPG,data/raw/papa/Pest/IMG_0205.JPG,pest,1500,1500,f9ec136ba23a10513cde01847b81de2b0a1fbe6e7fe3153a96bb05fd534977b1,copia exacta repetida
+data/processed/papa_256/pest/IMG_0208.JPG,data/raw/papa/Pest/IMG_0208.JPG,pest,1500,1500,feb9dd139f6dbf9add365700e88dbc6b32206504b7212265ebed3b9400b626b6,copia exacta repetida
+data/processed/papa_256/pest/IMG_0225.JPG,data/raw/papa/Pest/IMG_0225.JPG,pest,1500,1500,ba18171c2f707b6f69fcdba69b0c703d9892601a04b630adcfd6650b728d25f7,copia exacta repetida
+data/processed/papa_256/phytophthora/IMG_0261 - Copy.JPG,data/raw/papa/Phytopthora/IMG_0261 - Copy.JPG,phytophthora,1500,1500,c7c63f49fe7c22f20c610d5b276ffb3a62151104130b84bdb2d220029c59c1df,copia exacta repetida
+data/processed/papa_256/phytophthora/IMG_0390.JPG,data/raw/papa/Phytopthora/IMG_0390.JPG,phytophthora,1500,1500,4bf2c4ddcefa9a49d19f45b3336e69f89237f4b84e156152168fb432675c1846,copia exacta repetida
+data/processed/papa_256/phytophthora/IMG_4815.JPG,data/raw/papa/Phytopthora/IMG_4815.JPG,phytophthora,1500,1500,de8b5b6bbda5cb640a941f518eee7acd880b993beae09a0dee0ff046eb7b6f18,copia exacta repetida
+data/processed/papa_256/phytophthora/IMG_9425.JPG,data/raw/papa/Phytopthora/IMG_9425.JPG,phytophthora,1500,1500,1fe9f99b074fb41fe9086cc4bb4407d977a59a71372f4086f4703e17cf81af38,copia exacta repetida
+data/processed/papa_256/phytophthora/IMG_9426.JPG,data/raw/papa/Phytopthora/IMG_9426.JPG,phytophthora,1500,1500,b9c651fe665f895631eab08d4e00da58822eeaa92d30d53723bec5822c2c6944,copia exacta repetida
+data/processed/papa_256/phytophthora/IMG_9430.JPG,data/raw/papa/Phytopthora/IMG_9430.JPG,phytophthora,1500,1500,87e5e061ed048faa173885928d8135d4134b56de4ac4084279ee3ec8e1e0d582,copia exacta repetida
+data/processed/papa_256/phytophthora/IMG_9439.JPG,data/raw/papa/Phytopthora/IMG_9439.JPG,phytophthora,1500,1500,4e16ecd353af334b3df3c626703ad6bd0d1f7fa3f52869e5fba07b7581aab5ba,copia exacta repetida
+data/processed/papa_256/phytophthora/IMG_9440.JPG,data/raw/papa/Phytopthora/IMG_9440.JPG,phytophthora,1500,1500,34afc0cc02321a2447717a8fac3f7890c6f782980da8edc4a177fc9a9c611e7a,copia exacta repetida
+data/processed/papa_256/phytophthora/IMG_9443.JPG,data/raw/papa/Phytopthora/IMG_9443.JPG,phytophthora,1500,1500,d26a18ff7de25842e96a3e15eb22a8a6b0aa967643934ec50f2a6b2aab68029f,copia exacta repetida
+data/processed/papa_256/phytophthora/IMG_9463.JPG,data/raw/papa/Phytopthora/IMG_9463.JPG,phytophthora,1500,1500,26ee54363b751b024fb2c4c0068b06cce734e951b0227a572f8b6a52ec20895c,copia exacta repetida
+data/processed/papa_256/phytophthora/IMG_9464.JPG,data/raw/papa/Phytopthora/IMG_9464.JPG,phytophthora,1500,1500,b627173b6a81ff2f2329ff77dbfc6a3fe8dbaf5a71c37ee7bf052369ac66b885,copia exacta repetida
+data/processed/papa_256/phytophthora/IMG_9506.JPG,data/raw/papa/Phytopthora/IMG_9506.JPG,phytophthora,1500,1500,1dfe0c4c6c06ad69df1aa7a769354132f3a2596f9f11ee87ec593a10ad96d76e,copia exacta repetida
+data/processed/papa_256/phytophthora/IMG_9508.JPG,data/raw/papa/Phytopthora/IMG_9508.JPG,phytophthora,1500,1500,95dc054017eb13b320a55d3955dbe09957d9f6d79c2c5f8135b2ab26b22fde24,copia exacta repetida
+data/processed/papa_256/phytophthora/IMG_9509.JPG,data/raw/papa/Phytopthora/IMG_9509.JPG,phytophthora,1500,1500,baf3bb9050cd78bfc663408022d295fea91d8f0800db7ff6da148c73a5fe8caa,copia exacta repetida
+data/processed/papa_256/phytophthora/IMG_9510.JPG,data/raw/papa/Phytopthora/IMG_9510.JPG,phytophthora,1500,1500,3380cf03cb3fa0f796a4baf1208a2a1ce902598c3236cb40b1863b7330b2413c,copia exacta repetida
+data/processed/papa_256/phytophthora/IMG_9511.JPG,data/raw/papa/Phytopthora/IMG_9511.JPG,phytophthora,1500,1500,57ae8d5249c97d172ed8f20190c53d761f62a5887798a39abf1604d07e53d397,copia exacta repetida
+data/processed/papa_256/phytophthora/IMG_9512.JPG,data/raw/papa/Phytopthora/IMG_9512.JPG,phytophthora,1500,1500,6a5cfd4e971217870393da31eee20cf429c70334425132804715613ad4512cff,copia exacta repetida
+data/processed/papa_256/phytophthora/IMG_9514.JPG,data/raw/papa/Phytopthora/IMG_9514.JPG,phytophthora,1500,1500,beaa8503c480a39708a25d26bf93dbb55029a6aee0d6c2ecf670526dc55195ad,copia exacta repetida
+data/processed/papa_256/phytophthora/IMG_9517.JPG,data/raw/papa/Phytopthora/IMG_9517.JPG,phytophthora,1500,1500,67291cbaad20f0be3f227124628367ef621e0e8a1a86a743f971bb93338801be,copia exacta repetida
+data/processed/papa_256/phytophthora/IMG_9518.JPG,data/raw/papa/Phytopthora/IMG_9518.JPG,phytophthora,1500,1500,0cd994f85c76c526e22d71dfd0ee2ab1ea74a31392dbf26d73917e935222d3c0,copia exacta repetida
+data/processed/papa_256/phytophthora/IMG_9519.JPG,data/raw/papa/Phytopthora/IMG_9519.JPG,phytophthora,1500,1500,1c072947c322103a1ce53205bd4302ac19f4da1b3b463edaeba0ef2ea7b2d408,copia exacta repetida
+data/processed/papa_256/phytophthora/IMG_9520.JPG,data/raw/papa/Phytopthora/IMG_9520.JPG,phytophthora,1500,1500,dffb353d2ff2d4c3271f6072781eb88b93eb4ad09074c24668b6a9ff445a0608,copia exacta repetida
+data/processed/papa_256/phytophthora/IMG_9523.JPG,data/raw/papa/Phytopthora/IMG_9523.JPG,phytophthora,1500,1500,4e588367548bbeae0621850e7f2760b057e3eeb22fba361c1b09dcb22ee57292,copia exacta repetida
+data/processed/papa_256/phytophthora/IMG_9524.JPG,data/raw/papa/Phytopthora/IMG_9524.JPG,phytophthora,1500,1500,8ae1e85b533632b16764085b55b0c7f83d7f0f9b557371d08f7d1002fc0b5a0b,copia exacta repetida
+data/processed/papa_256/phytophthora/IMG_9526.JPG,data/raw/papa/Phytopthora/IMG_9526.JPG,phytophthora,1500,1500,46f7f2221c8e5c6cd21ab2f078f912b5bd371b31da0d83c32f6c90550903a7ed,copia exacta repetida
+data/processed/papa_256/phytophthora/IMG_9531.JPG,data/raw/papa/Phytopthora/IMG_9531.JPG,phytophthora,1500,1500,81f8cb312617d33c8feeb5a08fcb84d1e6ddc904fdb3de6be688e4642a79c785,copia exacta repetida
+data/processed/papa_256/phytophthora/IMG_9534.JPG,data/raw/papa/Phytopthora/IMG_9534.JPG,phytophthora,1500,1500,c72ec2e47173e4301b844da0272522699524d553d17fcefecea8e137825dd0ad,copia exacta repetida
+data/processed/papa_256/phytophthora/IMG_9535.JPG,data/raw/papa/Phytopthora/IMG_9535.JPG,phytophthora,1500,1500,5c13351c81f7fb04be1fac7df65e29aa22f418f5a7f7c0b54bd14fca9fb17433,copia exacta repetida
+data/processed/papa_256/phytophthora/IMG_9536.JPG,data/raw/papa/Phytopthora/IMG_9536.JPG,phytophthora,1500,1500,758d66d348e1fb239fc071610071e09855afa62028601d3ea86ac34323f93088,copia exacta repetida
+data/processed/papa_256/phytophthora/IMG_9537.JPG,data/raw/papa/Phytopthora/IMG_9537.JPG,phytophthora,1500,1500,e0ef725d3bac5812a9e3045a39f6e5a72abeb90c967d0b1002e17f8e5bff18a4,copia exacta repetida
+data/processed/papa_256/phytophthora/IMG_9538.JPG,data/raw/papa/Phytopthora/IMG_9538.JPG,phytophthora,1500,1500,2e62071e02022997a40acb782a0ef6658955152f11c49aeb29c8ed7232d47164,copia exacta repetida
+data/processed/papa_256/phytophthora/IMG_9539.JPG,data/raw/papa/Phytopthora/IMG_9539.JPG,phytophthora,1500,1500,2313e011e69171761864bcf1b20b540cfa58609ee01cdb2be6a6355f52f1f85f,copia exacta repetida
+data/processed/papa_256/phytophthora/IMG_9540.JPG,data/raw/papa/Phytopthora/IMG_9540.JPG,phytophthora,1500,1500,c081960e9e0e32bb07915b14f6078004d2979852dda26dd8902a2efd1d96e2c8,copia exacta repetida
+data/processed/papa_256/phytophthora/IMG_9560.JPG,data/raw/papa/Phytopthora/IMG_9560.JPG,phytophthora,1500,1500,4d71b6463c49452e6dfb205ecbee88cd6c33846269fc51421beb23fe29918744,copia exacta repetida
+data/processed/papa_256/phytophthora/IMG_9561.JPG,data/raw/papa/Phytopthora/IMG_9561.JPG,phytophthora,1500,1500,66dcfbf82dd94003a205363586f26265134ba1a183da5d551b09aa114fd6423a,copia exacta repetida
+data/processed/papa_256/phytophthora/IMG_9565.JPG,data/raw/papa/Phytopthora/IMG_9565.JPG,phytophthora,1500,1500,92738ca51080c0f6c56aa5e4eff2f44d3ebc6891ffd7630276f5fab263093464,copia exacta repetida
+data/processed/papa_256/phytophthora/IMG_9566.JPG,data/raw/papa/Phytopthora/IMG_9566.JPG,phytophthora,1500,1500,6755c907c5388e275e5fe4315cb089b806e50631f9fbd422c9be62bd40371ada,copia exacta repetida
+data/processed/papa_256/phytophthora/IMG_9567.JPG,data/raw/papa/Phytopthora/IMG_9567.JPG,phytophthora,1500,1500,2d504280c2212acb74790f80c836791cab75e52869a0052ffb694b481b374d5f,copia exacta repetida
+data/processed/papa_256/virus/IMG_20230815_152740.jpg,data/raw/papa/Virus/IMG_20230815_152740.jpg,virus,1500,1500,07365d6f547280c0b283eb1097f0503e8b2173516100c09172b04b52c4216eb5,copia exacta repetida

@@ -1,0 +1,31 @@
+{
+  "run": "papa_resnet50_pre_s0",
+  "model": "resnet50",
+  "pretrained": true,
+  "seed": 0,
+  "best_epoch": 39,
+  "epochs_run": 40,
+  "val": {
+    "macro_f1": 0.8815865558423113,
+    "balanced_acc": 0.8836429944620036,
+    "accuracy": 0.8844444444444445
+  },
+  "test": {
+    "macro_f1": 0.8431044045239878,
+    "balanced_acc": 0.8548570481124917,
+    "accuracy": 0.8565121412803532
+  },
+  "test_f1_por_clase": {
+    "bacteria": 0.9540229885057471,
+    "fungi": 0.7982062780269058,
+    "healthy": 0.835820895522388,
+    "nematode": 0.7619047619047619,
+    "pest": 0.8361581920903954,
+    "phytophthora": 0.8181818181818182,
+    "virus": 0.8974358974358975
+  },
+  "train_time_min": 65.86419068498847,
+  "gpu_peak_mb": null,
+  "params": 23522375,
+  "nota": "re-evaluada con src/eval_run.py: la corrida se colgó al crear los workers de test"
+}

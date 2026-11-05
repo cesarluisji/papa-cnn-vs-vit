@@ -1,0 +1,9 @@
+# CNN pequeña (4 bloques conv) entrenada desde cero: línea base neuronal
+model: cnn_small
+pretrained: false
+lr: 1.0e-3
+batch_size: 32
+epochs: 40          # igual que en los laboratorios del curso
+weight_decay: 0.01
+patience: 40        # sin parada temprana: siempre 40 épocas; se guarda la mejor época por val macro-F1
+amp: false          # fp16 colapsa en GTX 1650 Ti (val predice 1 sola clase); fp32 OK

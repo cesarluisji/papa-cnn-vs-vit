@@ -1,0 +1,5 @@
+===== papa_cnn_small_scratch_s2 01:07 =====
+TEST macro-F1 0.6230 | bacc 0.6642 | acc 0.6380 | 29.3 min | VRAM pico 2375 MB
+===== papa_resnet50_pre_s0 01:38 =====
+  FALLÓ papa_resnet50_pre_s0 (ver results/logs/papa_resnet50_pre_s0.log)
+===== papa_resnet50_pre_s1 07:24 =====

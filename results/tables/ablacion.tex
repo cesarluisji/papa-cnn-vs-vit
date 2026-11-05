@@ -1,0 +1,14 @@
+\begin{table}[t]
+\centering
+\caption{Ablación: preentrenamiento en ImageNet vs. entrenamiento desde cero (macro-F1 en prueba).}
+\label{tab:ablacion}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{lcccc}
+\toprule
+Modelo & Preentrenado & Desde cero & Δ macro-F1 & Semillas (pre/cero) \\
+\midrule
+ResNet-50 & 0.843 $\pm$ 0.012 & 0.642 $\pm$ 0.007 & +0.201 & 3/3 \\
+ViT-S/16 & 0.853 $\pm$ 0.013 & 0.499 $\pm$ 0.028 & +0.355 & 3/3 \\
+\bottomrule
+\end{tabular}}
+\end{table}

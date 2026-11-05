@@ -1,0 +1,56 @@
+== papa_resnet50_scratch_s0 | 23.52 M params | train 2112 val 450 test 453 | Tesla T4
+ep  1 loss 1.6657 val F1 0.3436 bacc 0.4026 acc 0.2911 (28s) *
+ep  2 loss 1.6411 val F1 0.3012 bacc 0.3733 acc 0.2778 (22s)
+ep  3 loss 1.6167 val F1 0.3245 bacc 0.4165 acc 0.3400 (23s)
+ep  4 loss 1.5721 val F1 0.3170 bacc 0.3723 acc 0.3556 (22s)
+ep  5 loss 1.5015 val F1 0.3923 bacc 0.4161 acc 0.3867 (23s) *
+ep  6 loss 1.4757 val F1 0.3701 bacc 0.4295 acc 0.3267 (24s)
+ep  7 loss 1.4172 val F1 0.4266 bacc 0.4473 acc 0.4244 (23s) *
+ep  8 loss 1.4041 val F1 0.3996 bacc 0.4687 acc 0.4044 (24s)
+ep  9 loss 1.3408 val F1 0.3960 bacc 0.4172 acc 0.4200 (23s)
+ep 10 loss 1.3350 val F1 0.3683 bacc 0.4298 acc 0.3933 (23s)
+ep 11 loss 1.3350 val F1 0.4370 bacc 0.5090 acc 0.4311 (21s) *
+ep 12 loss 1.3245 val F1 0.4185 bacc 0.5078 acc 0.4400 (25s)
+ep 13 loss 1.2993 val F1 0.4152 bacc 0.4689 acc 0.3800 (21s)
+ep 14 loss 1.2685 val F1 0.4512 bacc 0.4998 acc 0.4489 (23s) *
+ep 15 loss 1.2113 val F1 0.4654 bacc 0.5104 acc 0.4600 (23s) *
+ep 16 loss 1.1976 val F1 0.5321 bacc 0.5518 acc 0.5378 (25s) *
+ep 17 loss 1.1749 val F1 0.4580 bacc 0.4943 acc 0.4600 (24s)
+ep 18 loss 1.1810 val F1 0.5121 bacc 0.5344 acc 0.5000 (23s)
+ep 19 loss 1.1051 val F1 0.4907 bacc 0.5350 acc 0.5200 (21s)
+ep 20 loss 1.0940 val F1 0.5157 bacc 0.5683 acc 0.5289 (24s)
+ep 21 loss 1.0638 val F1 0.5767 bacc 0.6007 acc 0.5756 (22s) *
+ep 22 loss 1.0338 val F1 0.5793 bacc 0.5992 acc 0.5956 (25s) *
+ep 23 loss 0.9908 val F1 0.5739 bacc 0.6138 acc 0.5911 (23s)
+ep 24 loss 0.9764 val F1 0.5683 bacc 0.6184 acc 0.5844 (23s)
+ep 25 loss 0.9531 val F1 0.5798 bacc 0.6277 acc 0.5889 (21s) *
+ep 26 loss 0.9125 val F1 0.6113 bacc 0.6507 acc 0.6222 (25s) *
+ep 27 loss 0.9169 val F1 0.6009 bacc 0.6534 acc 0.6133 (23s)
+ep 28 loss 0.8582 val F1 0.6523 bacc 0.6856 acc 0.6600 (23s) *
+ep 29 loss 0.8399 val F1 0.6461 bacc 0.6915 acc 0.6533 (24s)
+ep 30 loss 0.8396 val F1 0.6376 bacc 0.6724 acc 0.6444 (24s)
+ep 31 loss 0.8014 val F1 0.6481 bacc 0.6771 acc 0.6578 (22s)
+ep 32 loss 0.7855 val F1 0.6525 bacc 0.6871 acc 0.6711 (22s) *
+ep 33 loss 0.7903 val F1 0.6613 bacc 0.7023 acc 0.6756 (24s) *
+ep 34 loss 0.7677 val F1 0.6674 bacc 0.6987 acc 0.6778 (26s) *
+ep 35 loss 0.7577 val F1 0.6851 bacc 0.7138 acc 0.6933 (24s) *
+ep 36 loss 0.7578 val F1 0.6896 bacc 0.7213 acc 0.6956 (26s) *
+ep 37 loss 0.7338 val F1 0.6721 bacc 0.7052 acc 0.6822 (24s)
+ep 38 loss 0.6971 val F1 0.6799 bacc 0.7117 acc 0.6911 (24s)
+ep 39 loss 0.7197 val F1 0.6761 bacc 0.7032 acc 0.6867 (22s)
+ep 40 loss 0.7314 val F1 0.6935 bacc 0.7174 acc 0.6978 (23s) *
+              precision    recall  f1-score   support
+
+    bacteria      0.781     0.953     0.859        86
+       fungi      0.674     0.518     0.586       112
+     healthy      0.488     0.667     0.563        30
+    nematode      0.571     0.800     0.667        10
+        pest      0.587     0.411     0.484        90
+phytophthora      0.576     0.739     0.648        46
+       virus      0.718     0.772     0.744        79
+
+    accuracy                          0.662       453
+   macro avg      0.628     0.694     0.650       453
+weighted avg      0.660     0.662     0.651       453
+
+TEST macro-F1 0.6500 | bacc 0.6943 | acc 0.6623 | 15.7 min | VRAM pico 1800 MB

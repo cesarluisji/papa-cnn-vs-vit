@@ -1,0 +1,9 @@
+# ViT-S/16 preentrenado en ImageNet (timm: vit_small_patch16_224), fine-tuning completo
+model: vit_small
+pretrained: true
+lr: 1.0e-4
+lr_scratch: 5.0e-4
+batch_size: 32
+epochs: 40          # igual que en los laboratorios del curso
+weight_decay: 0.05
+patience: 40        # sin parada temprana: siempre 40 épocas; se guarda la mejor época por val macro-F1

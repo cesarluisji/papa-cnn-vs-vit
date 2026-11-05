@@ -1,0 +1,34 @@
+{
+  "run": "papa_rf_s0",
+  "model": "random_forest",
+  "pretrained": false,
+  "seed": 0,
+  "hiperparametros": {
+    "n_estimators": 300,
+    "max_features": 0.05,
+    "min_samples_leaf": 3
+  },
+  "n_features": 1834,
+  "val": {
+    "macro_f1": 0.48398008473000026,
+    "balanced_acc": 0.46647916738917744,
+    "accuracy": 0.5644444444444444
+  },
+  "test": {
+    "macro_f1": 0.46148690084412713,
+    "balanced_acc": 0.44721351032893736,
+    "accuracy": 0.5474613686534217
+  },
+  "test_f1_por_clase": {
+    "bacteria": 0.7525773195876289,
+    "fungi": 0.5454545454545454,
+    "healthy": 0.2857142857142857,
+    "nematode": 0.18181818181818182,
+    "pest": 0.37037037037037035,
+    "phytophthora": 0.5121951219512195,
+    "virus": 0.5822784810126582
+  },
+  "train_time_min": 1.5913539899978786,
+  "feature_time_min": 0.40737522666653,
+  "gpu_peak_mb": 0
+}

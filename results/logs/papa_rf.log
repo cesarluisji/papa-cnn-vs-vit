@@ -1,0 +1,70 @@
+Descriptores: (3015, 1834) en 0.4 min
+  seed 0 {'n_estimators': 300, 'max_features': 'sqrt', 'min_samples_leaf': 1} val macro-F1 0.3830
+  seed 0 {'n_estimators': 300, 'max_features': 'sqrt', 'min_samples_leaf': 3} val macro-F1 0.4144
+  seed 0 {'n_estimators': 300, 'max_features': 0.05, 'min_samples_leaf': 1} val macro-F1 0.4479
+  seed 0 {'n_estimators': 300, 'max_features': 0.05, 'min_samples_leaf': 3} val macro-F1 0.4840
+  seed 0 {'n_estimators': 600, 'max_features': 'sqrt', 'min_samples_leaf': 1} val macro-F1 0.3924
+  seed 0 {'n_estimators': 600, 'max_features': 'sqrt', 'min_samples_leaf': 3} val macro-F1 0.4078
+  seed 0 {'n_estimators': 600, 'max_features': 0.05, 'min_samples_leaf': 1} val macro-F1 0.4192
+  seed 0 {'n_estimators': 600, 'max_features': 0.05, 'min_samples_leaf': 3} val macro-F1 0.4683
+              precision    recall  f1-score   support
+
+    bacteria      0.676     0.849     0.753        86
+       fungi      0.474     0.643     0.545       112
+     healthy      1.000     0.167     0.286        30
+    nematode      1.000     0.100     0.182        10
+        pest      0.417     0.333     0.370        90
+phytophthora      0.583     0.457     0.512        46
+       virus      0.582     0.582     0.582        79
+
+    accuracy                          0.547       453
+   macro avg      0.676     0.447     0.461       453
+weighted avg      0.577     0.547     0.528       453
+
+papa_rf_s0: mejor {'n_estimators': 300, 'max_features': 0.05, 'min_samples_leaf': 3} | TEST macro-F1 0.4615 bacc 0.4472 acc 0.5475
+  seed 1 {'n_estimators': 300, 'max_features': 'sqrt', 'min_samples_leaf': 1} val macro-F1 0.3931
+  seed 1 {'n_estimators': 300, 'max_features': 'sqrt', 'min_samples_leaf': 3} val macro-F1 0.4145
+  seed 1 {'n_estimators': 300, 'max_features': 0.05, 'min_samples_leaf': 1} val macro-F1 0.4303
+  seed 1 {'n_estimators': 300, 'max_features': 0.05, 'min_samples_leaf': 3} val macro-F1 0.4594
+  seed 1 {'n_estimators': 600, 'max_features': 'sqrt', 'min_samples_leaf': 1} val macro-F1 0.3884
+  seed 1 {'n_estimators': 600, 'max_features': 'sqrt', 'min_samples_leaf': 3} val macro-F1 0.4247
+  seed 1 {'n_estimators': 600, 'max_features': 0.05, 'min_samples_leaf': 1} val macro-F1 0.3897
+  seed 1 {'n_estimators': 600, 'max_features': 0.05, 'min_samples_leaf': 3} val macro-F1 0.4893
+              precision    recall  f1-score   support
+
+    bacteria      0.673     0.837     0.746        86
+       fungi      0.465     0.661     0.546       112
+     healthy      1.000     0.200     0.333        30
+    nematode      1.000     0.100     0.182        10
+        pest      0.492     0.356     0.413        90
+phytophthora      0.639     0.500     0.561        46
+       virus      0.620     0.620     0.620        79
+
+    accuracy                          0.567       453
+   macro avg      0.699     0.468     0.486       453
+weighted avg      0.602     0.567     0.550       453
+
+papa_rf_s1: mejor {'n_estimators': 600, 'max_features': 0.05, 'min_samples_leaf': 3} | TEST macro-F1 0.4859 bacc 0.4677 acc 0.5673
+  seed 2 {'n_estimators': 300, 'max_features': 'sqrt', 'min_samples_leaf': 1} val macro-F1 0.3911
+  seed 2 {'n_estimators': 300, 'max_features': 'sqrt', 'min_samples_leaf': 3} val macro-F1 0.4450
+  seed 2 {'n_estimators': 300, 'max_features': 0.05, 'min_samples_leaf': 1} val macro-F1 0.4211
+  seed 2 {'n_estimators': 300, 'max_features': 0.05, 'min_samples_leaf': 3} val macro-F1 0.4618
+  seed 2 {'n_estimators': 600, 'max_features': 'sqrt', 'min_samples_leaf': 1} val macro-F1 0.4057
+  seed 2 {'n_estimators': 600, 'max_features': 'sqrt', 'min_samples_leaf': 3} val macro-F1 0.4365
+  seed 2 {'n_estimators': 600, 'max_features': 0.05, 'min_samples_leaf': 1} val macro-F1 0.4542
+  seed 2 {'n_estimators': 600, 'max_features': 0.05, 'min_samples_leaf': 3} val macro-F1 0.4711
+              precision    recall  f1-score   support
+
+    bacteria      0.661     0.860     0.747        86
+       fungi      0.472     0.670     0.554       112
+     healthy      1.000     0.167     0.286        30
+    nematode      0.000     0.000     0.000        10
+        pest      0.449     0.344     0.390        90
+phytophthora      0.583     0.457     0.512        46
+       virus      0.653     0.595     0.623        79
+
+    accuracy                          0.558       453
+   macro avg      0.545     0.442     0.444       453
+weighted avg      0.571     0.558     0.536       453
+
+papa_rf_s2: mejor {'n_estimators': 600, 'max_features': 0.05, 'min_samples_leaf': 3} | TEST macro-F1 0.4445 bacc 0.4418 acc 0.5585

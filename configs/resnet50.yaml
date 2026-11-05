@@ -1,0 +1,9 @@
+# ResNet-50 preentrenada en ImageNet (timm), fine-tuning completo
+model: resnet50
+pretrained: true
+lr: 3.0e-4          # fine-tuning
+lr_scratch: 1.0e-3  # ablación desde cero
+batch_size: 32
+epochs: 40          # igual que en los laboratorios del curso
+weight_decay: 0.05
+patience: 40        # sin parada temprana: siempre 40 épocas; se guarda la mejor época por val macro-F1

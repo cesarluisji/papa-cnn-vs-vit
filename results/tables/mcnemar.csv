@@ -1,0 +1,4 @@
+Semilla,Solo ResNet acierta,Solo ViT acierta,p (McNemar exacto)
+0,20,27,0.3817
+1,24,25,1.0
+2,20,31,0.1608

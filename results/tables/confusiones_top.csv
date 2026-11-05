@@ -1,0 +1,189 @@
+Modelo,Real,Predicho,Errores (suma semillas),Semillas,% de la clase real
+CNN pequeña,pest,virus,50,3,18.5
+CNN pequeña,pest,phytophthora,46,3,17.0
+CNN pequeña,fungi,bacteria,39,3,11.6
+CNN pequeña,fungi,pest,37,3,11.0
+CNN pequeña,pest,fungi,37,3,13.7
+CNN pequeña,fungi,virus,31,3,9.2
+CNN pequeña,fungi,healthy,30,3,8.9
+CNN pequeña,pest,healthy,27,3,10.0
+CNN pequeña,pest,bacteria,23,3,8.5
+CNN pequeña,fungi,phytophthora,18,3,5.4
+CNN pequeña,phytophthora,fungi,17,3,12.3
+CNN pequeña,virus,bacteria,16,3,6.8
+CNN pequeña,virus,fungi,12,3,5.1
+CNN pequeña,virus,healthy,12,3,5.1
+CNN pequeña,healthy,virus,11,3,12.2
+CNN pequeña,virus,phytophthora,10,3,4.2
+CNN pequeña,bacteria,virus,9,3,3.5
+CNN pequeña,phytophthora,pest,9,3,6.5
+CNN pequeña,healthy,fungi,8,3,8.9
+CNN pequeña,pest,nematode,8,3,3.0
+CNN pequeña,bacteria,fungi,7,3,2.7
+CNN pequeña,phytophthora,healthy,7,3,5.1
+CNN pequeña,fungi,nematode,6,3,1.8
+CNN pequeña,healthy,pest,6,3,6.7
+CNN pequeña,phytophthora,bacteria,6,3,4.3
+CNN pequeña,nematode,fungi,4,3,13.3
+CNN pequeña,phytophthora,virus,4,3,2.9
+CNN pequeña,virus,pest,4,3,1.7
+CNN pequeña,healthy,phytophthora,2,3,2.2
+CNN pequeña,nematode,pest,2,3,6.7
+CNN pequeña,nematode,phytophthora,2,3,6.7
+CNN pequeña,phytophthora,nematode,2,3,1.4
+CNN pequeña,bacteria,pest,1,3,0.4
+RF,pest,fungi,92,3,34.1
+RF,virus,fungi,63,3,26.6
+RF,fungi,bacteria,43,3,12.8
+RF,fungi,pest,43,3,12.8
+RF,phytophthora,pest,35,3,25.4
+RF,pest,bacteria,32,3,11.9
+RF,phytophthora,fungi,30,3,21.7
+RF,healthy,fungi,29,3,32.2
+RF,pest,virus,28,3,10.4
+RF,pest,phytophthora,25,3,9.3
+RF,healthy,pest,24,3,26.7
+RF,fungi,virus,22,3,6.5
+RF,virus,bacteria,21,3,8.9
+RF,healthy,virus,20,3,22.2
+RF,bacteria,fungi,19,3,7.4
+RF,nematode,fungi,16,3,53.3
+RF,bacteria,virus,14,3,5.4
+RF,virus,phytophthora,9,3,3.8
+RF,fungi,phytophthora,7,3,2.1
+RF,nematode,bacteria,6,3,20.0
+RF,phytophthora,bacteria,6,3,4.3
+RF,bacteria,pest,5,3,1.9
+RF,nematode,pest,4,3,13.3
+RF,nematode,virus,2,3,6.7
+RF,phytophthora,virus,2,3,1.4
+RF,virus,pest,2,3,0.8
+RF,bacteria,phytophthora,1,3,0.4
+RF,healthy,phytophthora,1,3,1.1
+ResNet-50,pest,fungi,30,3,11.1
+ResNet-50,fungi,pest,29,3,8.6
+ResNet-50,phytophthora,fungi,18,3,13.0
+ResNet-50,fungi,phytophthora,17,3,5.1
+ResNet-50,virus,healthy,16,3,6.8
+ResNet-50,pest,virus,7,3,2.6
+ResNet-50,healthy,virus,6,3,6.7
+ResNet-50,virus,fungi,6,3,2.5
+ResNet-50,fungi,bacteria,5,3,1.5
+ResNet-50,nematode,fungi,5,3,16.7
+ResNet-50,pest,healthy,5,3,1.9
+ResNet-50,phytophthora,pest,5,3,3.6
+ResNet-50,virus,bacteria,5,3,2.1
+ResNet-50,virus,pest,5,3,2.1
+ResNet-50,fungi,virus,4,3,1.2
+ResNet-50,pest,phytophthora,4,3,1.5
+ResNet-50,bacteria,fungi,3,3,1.2
+ResNet-50,bacteria,virus,3,3,1.2
+ResNet-50,fungi,healthy,3,3,0.9
+ResNet-50,fungi,nematode,3,3,0.9
+ResNet-50,healthy,pest,3,3,3.3
+ResNet-50,phytophthora,bacteria,3,3,2.2
+ResNet-50,phytophthora,virus,3,3,2.2
+ResNet-50,bacteria,healthy,2,3,0.8
+ResNet-50,pest,bacteria,2,3,0.7
+ResNet-50,phytophthora,nematode,2,3,1.4
+ResNet-50,bacteria,pest,1,3,0.4
+ResNet-50,nematode,bacteria,1,3,3.3
+ResNet-50,nematode,pest,1,3,3.3
+ResNet-50 cero,pest,fungi,49,3,18.1
+ResNet-50 cero,fungi,pest,45,3,13.4
+ResNet-50 cero,fungi,phytophthora,38,3,11.3
+ResNet-50 cero,pest,virus,31,3,11.5
+ResNet-50 cero,pest,healthy,30,3,11.1
+ResNet-50 cero,pest,phytophthora,27,3,10.0
+ResNet-50 cero,pest,bacteria,26,3,9.6
+ResNet-50 cero,fungi,bacteria,22,3,6.5
+ResNet-50 cero,fungi,healthy,22,3,6.5
+ResNet-50 cero,virus,bacteria,21,3,8.9
+ResNet-50 cero,healthy,virus,18,3,20.0
+ResNet-50 cero,virus,healthy,16,3,6.8
+ResNet-50 cero,phytophthora,pest,15,3,10.9
+ResNet-50 cero,fungi,virus,14,3,4.2
+ResNet-50 cero,phytophthora,fungi,12,3,8.7
+ResNet-50 cero,fungi,nematode,9,3,2.7
+ResNet-50 cero,bacteria,virus,8,3,3.1
+ResNet-50 cero,virus,phytophthora,8,3,3.4
+ResNet-50 cero,bacteria,fungi,7,3,2.7
+ResNet-50 cero,virus,fungi,7,3,3.0
+ResNet-50 cero,virus,pest,7,3,3.0
+ResNet-50 cero,healthy,pest,6,3,6.7
+ResNet-50 cero,pest,nematode,6,3,2.2
+ResNet-50 cero,healthy,phytophthora,4,3,4.4
+ResNet-50 cero,healthy,fungi,3,3,3.3
+ResNet-50 cero,nematode,fungi,3,3,10.0
+ResNet-50 cero,nematode,pest,2,3,6.7
+ResNet-50 cero,phytophthora,nematode,2,3,1.4
+ResNet-50 cero,bacteria,nematode,1,3,0.4
+ResNet-50 cero,nematode,bacteria,1,3,3.3
+ResNet-50 cero,nematode,phytophthora,1,3,3.3
+ResNet-50 cero,phytophthora,bacteria,1,3,0.7
+ResNet-50 cero,phytophthora,healthy,1,3,0.7
+ResNet-50 cero,phytophthora,virus,1,3,0.7
+ViT-S/16,pest,fungi,38,3,14.1
+ViT-S/16,phytophthora,fungi,17,3,12.3
+ViT-S/16,fungi,pest,16,3,4.8
+ViT-S/16,virus,healthy,16,3,6.8
+ViT-S/16,healthy,virus,10,3,11.1
+ViT-S/16,virus,bacteria,10,3,4.2
+ViT-S/16,virus,fungi,7,3,3.0
+ViT-S/16,virus,pest,7,3,3.0
+ViT-S/16,fungi,virus,6,3,1.8
+ViT-S/16,pest,healthy,6,3,2.2
+ViT-S/16,bacteria,fungi,5,3,1.9
+ViT-S/16,fungi,phytophthora,5,3,1.5
+ViT-S/16,nematode,fungi,5,3,16.7
+ViT-S/16,fungi,bacteria,4,3,1.2
+ViT-S/16,fungi,nematode,4,3,1.2
+ViT-S/16,pest,phytophthora,4,3,1.5
+ViT-S/16,pest,virus,4,3,1.5
+ViT-S/16,phytophthora,bacteria,3,3,2.2
+ViT-S/16,nematode,pest,2,3,6.7
+ViT-S/16,pest,bacteria,2,3,0.7
+ViT-S/16,bacteria,virus,1,3,0.4
+ViT-S/16,healthy,pest,1,3,1.1
+ViT-S/16,nematode,bacteria,1,3,3.3
+ViT-S/16,phytophthora,healthy,1,3,0.7
+ViT-S/16,phytophthora,nematode,1,3,0.7
+ViT-S/16,phytophthora,pest,1,3,0.7
+ViT-S/16,phytophthora,virus,1,3,0.7
+ViT-S/16 cero,fungi,bacteria,70,3,20.8
+ViT-S/16 cero,pest,virus,57,3,21.1
+ViT-S/16 cero,fungi,phytophthora,50,3,14.9
+ViT-S/16 cero,pest,phytophthora,46,3,17.0
+ViT-S/16 cero,pest,fungi,40,3,14.8
+ViT-S/16 cero,pest,healthy,35,3,13.0
+ViT-S/16 cero,fungi,pest,32,3,9.5
+ViT-S/16 cero,fungi,healthy,30,3,8.9
+ViT-S/16 cero,fungi,virus,28,3,8.3
+ViT-S/16 cero,bacteria,virus,27,3,10.5
+ViT-S/16 cero,virus,fungi,27,3,11.4
+ViT-S/16 cero,healthy,virus,25,3,27.8
+ViT-S/16 cero,virus,bacteria,24,3,10.1
+ViT-S/16 cero,virus,healthy,24,3,10.1
+ViT-S/16 cero,virus,phytophthora,20,3,8.4
+ViT-S/16 cero,pest,bacteria,19,3,7.0
+ViT-S/16 cero,healthy,pest,14,3,15.6
+ViT-S/16 cero,phytophthora,healthy,14,3,10.1
+ViT-S/16 cero,phytophthora,virus,14,3,10.1
+ViT-S/16 cero,virus,pest,13,3,5.5
+ViT-S/16 cero,bacteria,fungi,12,3,4.7
+ViT-S/16 cero,phytophthora,fungi,9,3,6.5
+ViT-S/16 cero,phytophthora,pest,7,3,5.1
+ViT-S/16 cero,pest,nematode,6,3,2.2
+ViT-S/16 cero,bacteria,healthy,5,3,1.9
+ViT-S/16 cero,healthy,fungi,5,3,5.6
+ViT-S/16 cero,healthy,phytophthora,5,3,5.6
+ViT-S/16 cero,phytophthora,nematode,5,3,3.6
+ViT-S/16 cero,bacteria,pest,4,3,1.6
+ViT-S/16 cero,fungi,nematode,3,3,0.9
+ViT-S/16 cero,nematode,pest,3,3,10.0
+ViT-S/16 cero,phytophthora,bacteria,3,3,2.2
+ViT-S/16 cero,bacteria,nematode,2,3,0.8
+ViT-S/16 cero,bacteria,phytophthora,2,3,0.8
+ViT-S/16 cero,nematode,fungi,2,3,6.7
+ViT-S/16 cero,healthy,bacteria,1,3,1.1
+ViT-S/16 cero,healthy,nematode,1,3,1.1

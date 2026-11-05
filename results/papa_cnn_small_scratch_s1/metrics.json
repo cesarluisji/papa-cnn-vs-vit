@@ -1,0 +1,30 @@
+{
+  "run": "papa_cnn_small_scratch_s1",
+  "model": "cnn_small",
+  "pretrained": false,
+  "seed": 1,
+  "best_epoch": 39,
+  "epochs_run": 40,
+  "val": {
+    "macro_f1": 0.6107457318489262,
+    "balanced_acc": 0.6487209341607725,
+    "accuracy": 0.6333333333333333
+  },
+  "test": {
+    "macro_f1": 0.6021637622068431,
+    "balanced_acc": 0.6562840844571437,
+    "accuracy": 0.6203090507726269
+  },
+  "test_f1_por_clase": {
+    "bacteria": 0.8186528497409327,
+    "fungi": 0.6078431372549019,
+    "healthy": 0.5588235294117647,
+    "nematode": 0.64,
+    "pest": 0.3230769230769231,
+    "phytophthora": 0.5925925925925926,
+    "virus": 0.6741573033707865
+  },
+  "train_time_min": 56.515295045000194,
+  "gpu_peak_mb": 2374.8759765625,
+  "params": 1175015
+}

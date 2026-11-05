@@ -1,0 +1,30 @@
+{
+  "run": "papa_resnet50_scratch_s2",
+  "model": "resnet50",
+  "pretrained": false,
+  "seed": 2,
+  "best_epoch": 40,
+  "epochs_run": 40,
+  "val": {
+    "macro_f1": 0.6907260894239285,
+    "balanced_acc": 0.7273205953691291,
+    "accuracy": 0.7
+  },
+  "test": {
+    "macro_f1": 0.6369308446296331,
+    "balanced_acc": 0.6722575047732933,
+    "accuracy": 0.6556291390728477
+  },
+  "test_f1_por_clase": {
+    "bacteria": 0.8350515463917526,
+    "fungi": 0.6192893401015228,
+    "healthy": 0.5135135135135135,
+    "nematode": 0.6363636363636364,
+    "pest": 0.4675324675324675,
+    "phytophthora": 0.6538461538461539,
+    "virus": 0.7329192546583851
+  },
+  "train_time_min": 16.3181638361,
+  "gpu_peak_mb": 1802.0078125,
+  "params": 23522375
+}

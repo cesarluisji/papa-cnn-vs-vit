@@ -1,0 +1,3 @@
+Modelo,Preentrenado,Desde cero,Δ macro-F1,Semillas (pre/cero)
+ResNet-50,0.843 ± 0.012,0.642 ± 0.007,+0.201,3/3
+ViT-S/16,0.853 ± 0.013,0.499 ± 0.028,+0.355,3/3

@@ -1,0 +1,56 @@
+== papa_cnn_small_scratch_s0 | 1.18 M params | train 2112 val 450 test 453 | GeForce GTX 1650 Ti
+ep  1 loss 1.7179 val F1 0.3226 bacc 0.4295 acc 0.3644 (94s) *
+ep  2 loss 1.5847 val F1 0.2105 bacc 0.3442 acc 0.2378 (17s)
+ep  3 loss 1.5635 val F1 0.3415 bacc 0.3909 acc 0.3600 (17s) *
+ep  4 loss 1.5096 val F1 0.3094 bacc 0.4037 acc 0.3244 (17s)
+ep  5 loss 1.4593 val F1 0.3555 bacc 0.4717 acc 0.3711 (17s) *
+ep  6 loss 1.4309 val F1 0.3659 bacc 0.4297 acc 0.3644 (17s) *
+ep  7 loss 1.3972 val F1 0.4176 bacc 0.4906 acc 0.4044 (18s) *
+ep  8 loss 1.3586 val F1 0.4039 bacc 0.4987 acc 0.4200 (18s)
+ep  9 loss 1.3447 val F1 0.4356 bacc 0.4869 acc 0.4044 (18s) *
+ep 10 loss 1.3238 val F1 0.3562 bacc 0.4175 acc 0.3022 (18s)
+ep 11 loss 1.2690 val F1 0.4057 bacc 0.4566 acc 0.4022 (18s)
+ep 12 loss 1.3184 val F1 0.3827 bacc 0.4609 acc 0.3489 (18s)
+ep 13 loss 1.2424 val F1 0.4376 bacc 0.4984 acc 0.4556 (18s) *
+ep 14 loss 1.2248 val F1 0.4804 bacc 0.5427 acc 0.4844 (18s) *
+ep 15 loss 1.2098 val F1 0.4625 bacc 0.5296 acc 0.4689 (62s)
+ep 16 loss 1.1621 val F1 0.4985 bacc 0.5775 acc 0.4911 (270s) *
+ep 17 loss 1.1775 val F1 0.4638 bacc 0.5123 acc 0.4844 (269s)
+ep 18 loss 1.1742 val F1 0.5180 bacc 0.5699 acc 0.5178 (270s) *
+ep 19 loss 1.1199 val F1 0.4749 bacc 0.5143 acc 0.4844 (178s)
+ep 20 loss 1.1199 val F1 0.4767 bacc 0.5569 acc 0.4933 (16s)
+ep 21 loss 1.1116 val F1 0.5304 bacc 0.5473 acc 0.5044 (16s) *
+ep 22 loss 1.1046 val F1 0.5287 bacc 0.5715 acc 0.5356 (16s)
+ep 23 loss 1.0488 val F1 0.5437 bacc 0.5844 acc 0.5422 (17s) *
+ep 24 loss 1.0698 val F1 0.5209 bacc 0.5670 acc 0.5289 (17s)
+ep 25 loss 1.0225 val F1 0.5382 bacc 0.5976 acc 0.5578 (17s)
+ep 26 loss 1.0166 val F1 0.5495 bacc 0.6141 acc 0.5444 (17s) *
+ep 27 loss 1.0101 val F1 0.5260 bacc 0.5942 acc 0.5244 (17s)
+ep 28 loss 0.9727 val F1 0.5495 bacc 0.5979 acc 0.5444 (17s)
+ep 29 loss 0.9588 val F1 0.5784 bacc 0.6284 acc 0.5778 (17s) *
+ep 30 loss 0.9505 val F1 0.5719 bacc 0.6139 acc 0.5733 (17s)
+ep 31 loss 0.9308 val F1 0.5784 bacc 0.6334 acc 0.5822 (18s)
+ep 32 loss 0.9103 val F1 0.5947 bacc 0.6258 acc 0.6000 (18s) *
+ep 33 loss 0.9034 val F1 0.6069 bacc 0.6461 acc 0.6178 (18s) *
+ep 34 loss 0.8988 val F1 0.6033 bacc 0.6385 acc 0.5978 (18s)
+ep 35 loss 0.9154 val F1 0.5874 bacc 0.6363 acc 0.5933 (18s)
+ep 36 loss 0.8680 val F1 0.6177 bacc 0.6503 acc 0.6200 (18s) *
+ep 37 loss 0.8583 val F1 0.5997 bacc 0.6362 acc 0.6067 (18s)
+ep 38 loss 0.8707 val F1 0.6087 bacc 0.6419 acc 0.6089 (18s)
+ep 39 loss 0.8404 val F1 0.6223 bacc 0.6525 acc 0.6222 (101s) *
+ep 40 loss 0.8548 val F1 0.6190 bacc 0.6576 acc 0.6244 (270s)
+              precision    recall  f1-score   support
+
+    bacteria      0.750     0.942     0.835        86
+       fungi      0.655     0.491     0.561       112
+     healthy      0.440     0.733     0.550        30
+    nematode      0.583     0.700     0.636        10
+        pest      0.529     0.300     0.383        90
+phytophthora      0.596     0.674     0.633        46
+       virus      0.656     0.797     0.720        79
+
+    accuracy                          0.631       453
+   macro avg      0.601     0.663     0.617       453
+weighted avg      0.626     0.631     0.614       453
+
+TEST macro-F1 0.6169 | bacc 0.6625 | acc 0.6313 | 34.5 min | VRAM pico 2375 MB

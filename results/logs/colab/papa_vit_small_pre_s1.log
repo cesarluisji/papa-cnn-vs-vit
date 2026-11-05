@@ -1,0 +1,58 @@
+== papa_vit_small_pre_s1 | 21.67 M params | train 2112 val 450 test 453 | Tesla T4
+/content/proyecto/src/train.py:190: UserWarning: Detected call of `lr_scheduler.step()` before `optimizer.step()`. In PyTorch 1.1.0 and later, you should call them in the opposite order: `optimizer.step()` before `lr_scheduler.step()`.  Failure to do this will result in PyTorch skipping the first value of the learning rate schedule. See more details at https://pytorch.org/docs/stable/optim.html#how-to-adjust-learning-rate
+  sched.step()
+ep  1 loss 1.6242 val F1 0.6748 bacc 0.7276 acc 0.6622 (22s) *
+ep  2 loss 0.6605 val F1 0.7953 bacc 0.8441 acc 0.8156 (20s) *
+ep  3 loss 0.4509 val F1 0.8497 bacc 0.8763 acc 0.8600 (25s) *
+ep  4 loss 0.3840 val F1 0.8201 bacc 0.8691 acc 0.8200 (25s)
+ep  5 loss 0.3279 val F1 0.8563 bacc 0.8878 acc 0.8667 (23s) *
+ep  6 loss 0.2504 val F1 0.8496 bacc 0.8477 acc 0.8356 (23s)
+ep  7 loss 0.2267 val F1 0.8547 bacc 0.8727 acc 0.8556 (23s)
+ep  8 loss 0.1959 val F1 0.8321 bacc 0.8465 acc 0.8289 (21s)
+ep  9 loss 0.1465 val F1 0.8810 bacc 0.8850 acc 0.8756 (21s) *
+ep 10 loss 0.1460 val F1 0.8987 bacc 0.9013 acc 0.8911 (24s) *
+ep 11 loss 0.1558 val F1 0.8602 bacc 0.8585 acc 0.8556 (23s)
+ep 12 loss 0.1025 val F1 0.8937 bacc 0.9031 acc 0.8800 (22s)
+ep 13 loss 0.1134 val F1 0.8732 bacc 0.8844 acc 0.8711 (20s)
+ep 14 loss 0.0979 val F1 0.9075 bacc 0.9083 acc 0.8978 (21s) *
+ep 15 loss 0.0801 val F1 0.8818 bacc 0.8850 acc 0.8778 (23s)
+ep 16 loss 0.0699 val F1 0.8911 bacc 0.8913 acc 0.8889 (20s)
+ep 17 loss 0.0659 val F1 0.9175 bacc 0.9154 acc 0.9067 (23s) *
+ep 18 loss 0.0575 val F1 0.8922 bacc 0.9189 acc 0.8933 (22s)
+ep 19 loss 0.0355 val F1 0.9012 bacc 0.9142 acc 0.9000 (21s)
+ep 20 loss 0.0322 val F1 0.8932 bacc 0.9066 acc 0.8911 (22s)
+ep 21 loss 0.0169 val F1 0.8864 bacc 0.8972 acc 0.8956 (21s)
+ep 22 loss 0.0268 val F1 0.8861 bacc 0.9042 acc 0.8933 (21s)
+ep 23 loss 0.0274 val F1 0.9020 bacc 0.9137 acc 0.9111 (21s)
+ep 24 loss 0.0216 val F1 0.9093 bacc 0.9136 acc 0.9133 (20s)
+ep 25 loss 0.0111 val F1 0.9038 bacc 0.9124 acc 0.9111 (22s)
+ep 26 loss 0.0133 val F1 0.9109 bacc 0.9128 acc 0.9178 (20s)
+ep 27 loss 0.0061 val F1 0.9013 bacc 0.9058 acc 0.9111 (20s)
+ep 28 loss 0.0076 val F1 0.9084 bacc 0.9191 acc 0.9133 (22s)
+ep 29 loss 0.0021 val F1 0.9172 bacc 0.9276 acc 0.9244 (20s)
+ep 30 loss 0.0087 val F1 0.9064 bacc 0.9301 acc 0.9067 (20s)
+ep 31 loss 0.0031 val F1 0.9158 bacc 0.9253 acc 0.9244 (23s)
+ep 32 loss 0.0106 val F1 0.9095 bacc 0.9191 acc 0.9200 (20s)
+ep 33 loss 0.0046 val F1 0.9117 bacc 0.9272 acc 0.9156 (20s)
+ep 34 loss 0.0009 val F1 0.9088 bacc 0.9174 acc 0.9156 (23s)
+ep 35 loss 0.0018 val F1 0.9126 bacc 0.9221 acc 0.9200 (21s)
+ep 36 loss 0.0083 val F1 0.9096 bacc 0.9190 acc 0.9156 (21s)
+ep 37 loss 0.0049 val F1 0.9125 bacc 0.9218 acc 0.9200 (22s)
+ep 38 loss 0.0034 val F1 0.9140 bacc 0.9234 acc 0.9222 (20s)
+ep 39 loss 0.0005 val F1 0.9140 bacc 0.9234 acc 0.9222 (22s)
+ep 40 loss 0.0006 val F1 0.9140 bacc 0.9234 acc 0.9222 (22s)
+              precision    recall  f1-score   support
+
+    bacteria      0.923     0.977     0.949        86
+       fungi      0.781     0.893     0.833       112
+     healthy      0.806     0.833     0.820        30
+    nematode      0.727     0.800     0.762        10
+        pest      0.889     0.711     0.790        90
+phytophthora      0.949     0.804     0.871        46
+       virus      0.840     0.861     0.850        79
+
+    accuracy                          0.852       453
+   macro avg      0.845     0.840     0.839       453
+weighted avg      0.857     0.852     0.851       453
+
+TEST macro-F1 0.8393 | bacc 0.8399 | acc 0.8521 | 14.5 min | VRAM pico 1459 MB

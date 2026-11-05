@@ -1,0 +1,15 @@
+# Python 3.12 (probado también en Google Colab). Para GPU NVIDIA instale torch/torchvision con CUDA:
+#   pip install torch==2.6.0 torchvision==0.21.0 --index-url https://download.pytorch.org/whl/cu118
+torch==2.6.0
+torchvision==0.21.0
+timm==1.0.30
+scikit-learn==1.6.1
+scikit-image==0.26.0
+numpy==2.1.1
+pandas==2.2.3
+pillow==11.3.0
+matplotlib==3.10.1
+pyyaml==6.0.3
+scipy==1.15.2
+tabulate==0.10.0
+gradio==5.50.0

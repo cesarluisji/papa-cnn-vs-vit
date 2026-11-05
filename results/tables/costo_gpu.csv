@@ -1,0 +1,8 @@
+Modelo,device,corridas,min_por_corrida,min_total,vram_pico_mb
+CNN pequeña (desde cero),GeForce GTX 1650 Ti,3,40.1,120.3,2374.9
+Random Forest (color+HOG+LBP),cpu,3,1.8,5.5,0.0
+ResNet-50 (desde cero),Tesla T4,3,15.9,47.8,1804.1
+ResNet-50 (preentrenado),GeForce GTX 1650 Ti,1,65.9,65.9,
+ResNet-50 (preentrenado),Tesla T4,2,15.8,31.6,1802.0
+ViT-S/16 (desde cero),Tesla T4,3,15.0,45.0,1458.7
+ViT-S/16 (preentrenado),Tesla T4,3,14.4,43.2,1458.7

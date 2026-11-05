@@ -1,0 +1,4 @@
+Modelo,imagenes,masa_top10,masa_centro
+CNN pequeña,22,0.37 ± 0.18,0.34 ± 0.13
+ResNet-50,22,0.50 ± 0.11,0.61 ± 0.18
+ViT-S/16,22,0.29 ± 0.11,0.27 ± 0.11

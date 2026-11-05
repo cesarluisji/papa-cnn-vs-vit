@@ -50,7 +50,7 @@ Tablas completas en [`results/tables/`](results/tables), figuras en [`results/fi
 ├── notebooks/       demo_colab.ipynb (demo), entrenar_colab.ipynb (reproducir), ejecutados/ (corridas tal como se hicieron)
 ├── modelo_final/    config.json y meta.json del modelo final (los pesos se descargan del Release)
 ├── demo/ejemplos/   1 foto de prueba por clase
-├── paper/           artículo IEEE (LaTeX)
+├── paper/           artículo IEEE: main.tex + refs.bib + figs/ y el PDF compilado (paper.pdf)
 └── results/         una carpeta por corrida (config, historia, métricas, predicciones en test, matriz de confusión),
                      tables/, figures/, gradcam/, logs/
 ```
@@ -97,9 +97,15 @@ python src/summarize.py        # results/tables/*  (resumen, ablación, F1 por c
 python src/gradcam.py --runs results/papa_cnn_small_scratch_s2 results/papa_resnet50_pre_s1 results/papa_vit_small_pre_s2 \
        --n_por_clase 2 --n_errores 8 --out results/gradcam     # requiere los best.pt (reentrenar o descargar)
 python src/select_final.py     # elige el modelo final por validación → modelo_final/
+python src/cam_stats.py        # concentración de los mapas Grad-CAM (Tabla V del artículo)
 ```
 
-### 5. Demo
+### 5. Compilar el artículo
+```bash
+cd paper && pdflatex main && bibtex main && pdflatex main && pdflatex main
+```
+
+### 6. Demo
 ```bash
 python src/demo_app.py           # http://127.0.0.1:7860   (descarga los pesos la primera vez)
 python src/demo_app.py --share   # además, enlace público temporal

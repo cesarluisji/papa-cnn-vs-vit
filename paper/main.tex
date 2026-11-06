@@ -29,7 +29,7 @@ MIA-203 Redes Neuronales y Aprendizaje Profundo --- Equipo [N]}}
 \maketitle
 
 \begin{abstract}
-Diagnosticar a tiempo las enfermedades de la papa es clave para un cultivo central en la seguridad alimentaria del Perú. Los modelos de visión suelen entrenarse con fotos de laboratorio, pero en campo hay fondos variados, manos, sombras y plásticos. Estudiamos si, con solo 2\,112 imágenes de entrenamiento tomadas en campo y 7 clases desbalanceadas, conviene una red convolucional (ResNet-50) o un Vision Transformer (ViT-S/16), y cuánto aporta el preentrenamiento en ImageNet. Primero auditamos el conjunto de datos público: encontramos 55 pares de duplicados exactos (6 de ellos con etiquetas contradictorias) y casi-duplicados, y construimos una partición 70/15/15 por grupos sin fuga de datos. Comparamos 6 configuraciones con 3 semillas cada una, frente a un Random Forest con descriptores de color y textura y una CNN pequeña. Preentrenados, ResNet-50 y ViT-S/16 alcanzan macro-F1 de \pmsd{0.843}{0.012} y \pmsd{0.853}{0.013} en prueba, sin diferencia significativa según la prueba de McNemar ($p\geq0.16$). Ambos superan ampliamente al Random Forest (\pmsd{0.464}{0.021}). Sin preentrenamiento, el ViT cae a \pmsd{0.499}{0.028}, por debajo de la ResNet-50 entrenada desde cero (\pmsd{0.642}{0.007}). Es decir, con pocos datos el preentrenamiento importa más que la arquitectura. Grad-CAM muestra que la ResNet concentra su atención en la lesión, mientras que la CNN pequeña a veces usa atajos del fondo. Publicamos el código, la partición, los pesos y una demo reproducible.
+Diagnosticar a tiempo las enfermedades de la papa es clave para un cultivo central en la seguridad alimentaria del Perú. Los modelos de visión suelen entrenarse con fotos de laboratorio, pero en campo hay fondos variados, manos, sombras y plásticos. Estudiamos si, con solo 2\,112 imágenes de entrenamiento tomadas en campo y 7 clases desbalanceadas, conviene una red convolucional (ResNet-50) o un Vision Transformer (ViT-S/16), y cuánto aporta el preentrenamiento en ImageNet. Primero auditamos el conjunto de datos público: encontramos 55 pares de duplicados exactos (6 de ellos con etiquetas contradictorias) y casi-duplicados, y construimos una partición 70/15/15 por grupos sin fuga de datos. Comparamos 6 configuraciones, con 3 semillas cada una: ResNet-50 y ViT-S/16, preentrenados y desde cero, y dos líneas base, un Random Forest con descriptores de color y textura y una CNN pequeña. Preentrenados, ResNet-50 y ViT-S/16 alcanzan macro-F1 de \pmsd{0.843}{0.012} y \pmsd{0.853}{0.013} en prueba, sin diferencia significativa según la prueba de McNemar ($p\geq0.16$). Ambos superan ampliamente al Random Forest (\pmsd{0.464}{0.021}). Sin preentrenamiento, el ViT cae a \pmsd{0.499}{0.028}, por debajo de la ResNet-50 entrenada desde cero (\pmsd{0.642}{0.007}). Es decir, con pocos datos el preentrenamiento importa más que la arquitectura. Grad-CAM muestra que la ResNet concentra su atención en la lesión, mientras que la CNN pequeña a veces usa atajos del fondo. Publicamos el código, la partición, los pesos y una demo reproducible.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -184,10 +184,10 @@ Reemplazamos la cabeza por una capa de 7 salidas y ajustamos \emph{todos} los pa
 \subsection{Función de pérdida y entrenamiento}
 Para compensar el desbalance usamos entropía cruzada ponderada:
 \begin{equation}
-\mathcal{L}=-\frac{1}{B}\sum_{i=1}^{B} w_{y_i}\log \frac{e^{z_{i,y_i}}}{\sum_{k=1}^{K}e^{z_{i,k}}},\qquad
-w_k=\frac{1/n_k}{\frac{1}{K}\sum_{j}1/n_j},
+\mathcal{L}=-\frac{\sum_{i=1}^{B} w_{y_i}\log p_{i,y_i}}{\sum_{i=1}^{B} w_{y_i}},\qquad
+p_{i,k}=\frac{e^{z_{i,k}}}{\sum_{j=1}^{K}e^{z_{i,j}}},
 \end{equation}
-donde $n_k$ es el número de imágenes de la clase $k$ en entrenamiento y $K=7$. Así, la clase nematodos (47 imágenes) pesa 3.5 y la clase hongos, 0.32.
+con pesos $w_k=\frac{1/n_k}{\frac{1}{K}\sum_{j}1/n_j}$, donde $n_k$ es el número de imágenes de la clase $k$ en entrenamiento y $K=7$. La pérdida es la media ponderada del minibatch de tamaño $B$, que es lo que calcula \texttt{CrossEntropyLoss} de PyTorch cuando recibe pesos. Así, la clase nematodos (47 imágenes) pesa 3.5 y la clase hongos, 0.32.
 
 \textbf{Optimizador y calendario.} Usamos AdamW~\cite{loshchilov2019adamw} (Tabla~\ref{tab:hp}). La tasa de aprendizaje sube linealmente durante 2 épocas y luego decae con coseno hasta cero:
 \begin{equation}
@@ -196,9 +196,9 @@ donde $n_k$ es el número de imágenes de la clase $k$ en entrenamiento y $K=7$.
 \end{equation}
 con $t$ en pasos de minibatch.
 
-\textbf{Configuración común.} Tamaño de lote 32, 40 épocas sin parada temprana, recorte de gradiente a norma 1 y \textit{dropout} 0.2 en la cabeza. La precisión mixta fp16 se usa en ResNet y ViT; la CNN pequeña entrena en fp32 porque en fp16 colapsaba en nuestra GPU local.
+\textbf{Configuración común.} Tamaño de lote 32, 40 épocas sin parada temprana, recorte de gradiente a norma 1 y \textit{dropout} en la cabeza: 0.2 en ResNet y ViT, y 0.3 en la CNN pequeña. La precisión mixta fp16 se usa en ResNet y ViT; la CNN pequeña entrena en fp32 porque en fp16 colapsaba en nuestra GPU local.
 
-\textbf{Aumento de datos.} Recorte aleatorio redimensionado (escala 0.6--1), volteos horizontal y vertical, rotación de $\pm20^\circ$ y variación de brillo, contraste y saturación. Cada configuración se entrena con las semillas 0, 1 y 2.
+\textbf{Aumento de datos.} Recorte aleatorio redimensionado (escala 0.6--1), volteos horizontal y vertical, rotación de $\pm20^\circ$ y variación de color: brillo, contraste y saturación ($\pm$20\,\%) y tono ($\pm0.02$). Cada configuración se entrena con las semillas 0, 1 y 2.
 
 \begin{table}[t]
 \caption{Hiperparámetros (AdamW, lote 32, 40 épocas, 224$\times$224)}
@@ -276,7 +276,7 @@ La Tabla~\ref{tab:main} resume las 18 corridas propias (6 configuraciones $\time
 \subsection{CNN frente a ViT}
 Con preentrenamiento, el ViT-S/16 supera a la ResNet-50 por solo 0.010 de macro-F1, una diferencia menor que la desviación entre semillas. La prueba de McNemar por semilla (Tabla~\ref{tab:mcnemar}) no rechaza $H_0$ en ningún caso ($p=0.38$, 1.00 y 0.16).
 
-Por clase (Fig.~\ref{fig:f1}), los dos modelos se reparten las victorias: el ViT es mejor en \textit{Phytophthora} (0.87 frente a 0.80) y hongos (0.85 frente a 0.82); la ResNet, en virus (0.88 frente a 0.86) y nematodos (0.80 frente a 0.77). Concluimos que, preentrenadas, \textbf{ambas arquitecturas son estadísticamente equivalentes} en este problema.
+Por clase (Fig.~\ref{fig:f1}), los dos modelos se reparten las victorias: el ViT es mejor en \textit{Phytophthora} (0.87 frente a 0.80) y hongos (0.85 frente a 0.82); la ResNet, en virus (0.88 frente a 0.86) y nematodos (0.80 frente a 0.77). Concluimos que, preentrenadas, \textbf{no encontramos diferencia significativa entre ambas arquitecturas} en este problema. Esto no prueba que sean equivalentes, ya que para ello haría falta una prueba de equivalencia; pero la diferencia observada (0.010) es menor que la variación entre semillas, así que con estos datos la elección de arquitectura pesa poco.
 
 \begin{table}[t]
 \caption{McNemar exacto, ResNet-50 vs ViT-S/16 preentrenados (prueba)}
@@ -419,7 +419,7 @@ ViT-S/16 (cero) & T4 & 15.0 & 3 \\
 \subsection{Modelo final y demo}
 Elegimos como modelo final la corrida con mayor macro-F1 de \emph{validación}, sin mirar la prueba: ViT-S/16 preentrenado con semilla 2. Obtuvo 0.929 en validación y, en prueba, 0.864 de macro-F1 y 0.883 de exactitud.
 
-\textbf{App web.} Publicamos el modelo final en una aplicación web para celular, \url{https://agrotec-papa.vercel.app} (Fig.~\ref{fig:app}). Tiene tres pantallas: parcelas en un mapa satelital, diagnóstico e historial. El modelo corre \emph{en el navegador} con ONNX Runtime Web, sin servidor, y la foto no sale del dispositivo:
+\textbf{App web.} Publicamos el modelo final en una aplicación web para celular, \url{https://agrotec-papa.vercel.app} (Fig.~\ref{fig:app}). Tiene tres pantallas: parcelas en un mapa satelital, diagnóstico e historial. La interfaz reutiliza el diseño de AGROTEC, un prototipo de asistencia agrícola para Piura desarrollado por uno de los autores; en esta versión, el diagnóstico lo hace el modelo de este trabajo. El modelo corre \emph{en el navegador} con ONNX Runtime Web, sin servidor, y la foto no sale del dispositivo:
 \begin{itemize}
 \item \textbf{Exportación:} convertimos el ViT a ONNX y cuantizamos sus pesos a int8. El archivo pasa de 89 a 24\,MB y en prueba obtiene 0.864 de macro-F1 y 0.883 de exactitud, igual que el modelo original.
 \item \textbf{Grad-CAM sin gradientes:} el navegador no calcula gradientes. Por eso escribimos en el grafo el gradiente analítico del último bloque (cabeza, LayerNorm, MLP y atención del token [CLS]); el mapa coincide con el de PyTorch (error máximo $<10^{-5}$).
@@ -451,7 +451,7 @@ También hay una demo en Colab y otra local con Gradio, con las mismas salidas.
 
 %=====================================================================
 \section{Conclusiones}
-En la detección de 7 enfermedades de la papa con fotos de campo y pocos datos, ResNet-50 y ViT-S/16 preentrenados son estadísticamente equivalentes (macro-F1 0.84--0.85) y superan ampliamente a las líneas base. El preentrenamiento es el factor decisivo, en especial para el Transformer ($+0.355$). Grad-CAM revela que las redes pequeñas pueden apoyarse en atajos del fondo.
+En la detección de 7 enfermedades de la papa con fotos de campo y pocos datos, ResNet-50 y ViT-S/16 preentrenados no muestran diferencia significativa (macro-F1 0.84--0.85) y superan ampliamente a las líneas base. El preentrenamiento es el factor decisivo, en especial para el Transformer ($+0.355$). Grad-CAM revela que las redes pequeñas pueden apoyarse en atajos del fondo.
 
 Como trabajo futuro proponemos:
 \begin{itemize}

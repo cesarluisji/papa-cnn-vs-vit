@@ -33,3 +33,4 @@ web/dist/
 web/.vercel/
 .vercel/
 modelo_final/*_fp32.onnx
+paper/main.pdf

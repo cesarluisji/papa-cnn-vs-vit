@@ -6,6 +6,7 @@
 \usepackage{amsmath,amssymb}
 \usepackage{graphicx}
 \usepackage{booktabs}
+\usepackage{array}
 \usepackage{multirow}
 \usepackage{xcolor}
 \usepackage{tikz}
@@ -20,7 +21,7 @@
 \title{CNN frente a Vision Transformer con pocos datos:\\
 detección de enfermedades en hojas de papa fotografiadas en campo}
 
-\author{\IEEEauthorblockN{[Nombre completo 1], [Nombre completo 2], [Nombre completo 3], [Nombre completo 4]}
+\author{\IEEEauthorblockN{Gabriel Ángel Nizama Duque, Martín Alexis Valdiviezo Palma,\\ Juan José Pino Reyes, César Luis Jiménez Miranda}
 \IEEEauthorblockA{Maestría en Inteligencia Artificial, Unidad de Posgrado FIIS\\
 Universidad Nacional de Ingeniería, Lima, Perú\\
 MIA-203 Redes Neuronales y Aprendizaje Profundo --- Equipo [N]}}
@@ -48,7 +49,7 @@ Al mismo tiempo, los Vision Transformers (ViT)~\cite{dosovitskiy2021vit} han des
 \item \textbf{Auditoría y partición sin fuga.} Auditamos el conjunto de datos público: 110 imágenes en 55 pares de duplicados exactos, 12 de ellas con etiquetas contradictorias, y 64 imágenes en grupos de casi-duplicados. Construimos una partición 70/15/15 por grupos, reproducible con un comando.
 \item \textbf{Comparación controlada.} Comparamos ResNet-50 y ViT-S/16 (preentrenados y desde cero), una CNN pequeña y un Random Forest, con 3 semillas, métricas adecuadas al desbalance (macro-F1) y prueba de significancia (McNemar).
 \item \textbf{Ablación del preentrenamiento.} Cuantificamos que aporta $+0.355$ de macro-F1 al ViT y $+0.201$ a la ResNet.
-\item \textbf{Interpretabilidad y demo.} Analizamos los errores con Grad-CAM, incluyendo una medida de concentración de los mapas, y publicamos un demo reproducible en Colab con el modelo final.
+\item \textbf{Interpretabilidad y demo.} Analizamos los errores con Grad-CAM, incluyendo una medida de concentración de los mapas, y publicamos el modelo final en una app web que lo ejecuta en el celular, además de una demo reproducible en Colab.
 \end{enumerate}
 
 %=====================================================================
@@ -85,14 +86,75 @@ Al mismo tiempo, los Vision Transformers (ViT)~\cite{dosovitskiy2021vit} han des
 \label{fig:pipeline}
 \end{figure*}
 
+La Fig.~\ref{fig:pipeline} resume el flujo del estudio: auditoría y limpieza de los datos, partición sin fuga, entrenamiento de los modelos y evaluación única en prueba.
+
 \subsection{Datos}
-Usamos el \textit{Potato Leaf Disease Dataset in Uncontrolled Environment}~\cite{shabrina2024potato,shabrina2023mendeley} (Mendeley Data, licencia CC BY 4.0). Contiene 3\,076 fotos JPG de $1500\times1500$ píxeles tomadas en campo. Las 7 clases son bacteria, hongos (\textit{fungi}), sana, nematodos, plaga de insectos (\textit{pest}), \textit{Phytophthora} y virus. El desbalance es marcado: de 67 imágenes (nematodos) a 740 (hongos) tras la limpieza.
+Usamos el \textit{Potato Leaf Disease Dataset in Uncontrolled Environment}~\cite{shabrina2024potato,shabrina2023mendeley} (Mendeley Data, licencia CC BY 4.0). Contiene 3\,076 fotos JPG de $1500\times1500$ píxeles tomadas en campo. Las 7 clases son bacteria, hongos (\textit{fungi}), sana, nematodos, plaga de insectos (\textit{pest}), \textit{Phytophthora} y virus. El desbalance es marcado: de 67 imágenes (nematodos) a 740 (hongos) tras la limpieza. La Fig.~\ref{fig:dataset} muestra un ejemplo por clase y la distribución por partición. Las fotos incluyen manos, plásticos de cobertura y varias hojas por imagen.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.92\textwidth]{figs/dataset.png}
+\caption{Conjunto de datos. Arriba: una imagen de prueba por clase, tomada en campo con fondos no controlados (plástico, manos, otras plantas). Abajo: número de imágenes por clase y partición tras eliminar duplicados; la clase mayor (hongos) tiene 11 veces más imágenes que la menor (nematodos).}
+\label{fig:dataset}
+\end{figure*}
 
 \textbf{Auditoría.} Calculamos el hash sha256 de cada archivo y encontramos 110 imágenes que forman 55 pares de duplicados exactos. En 6 pares, la misma foto aparece en dos clases distintas. Eliminamos esas 12 imágenes, por tener etiqueta contradictoria, y 49 copias redundantes, de modo que quedan 3\,015. Además, calculamos un \textit{hash} perceptual dHash de 64 bits sobre la versión de $256\times256$. Unimos con \textit{union-find} los pares con distancia de Hamming $\leq4$, lo que da 64 imágenes en grupos de casi-duplicados.
 
 \textbf{Partición.} Hacemos una partición estratificada por grupo 70/15/15 (semilla 42): 2\,112 imágenes de entrenamiento, 450 de validación y 453 de prueba. Cada grupo de casi-duplicados cae completo en una sola partición, para que el modelo no se evalúe con variantes de fotos que ya vio. La validación se usa para elegir la mejor época y el modelo final; la prueba se evalúa una única vez por corrida.
 
 \subsection{Modelos}
+\begin{figure*}[t]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[font=\footnotesize, node distance=3.5mm,
+  b/.style={draw, rounded corners=2pt, align=center, minimum height=11mm, inner sep=2.5pt, fill=#1},
+  b/.default=white, f/.style={-{Latex[length=1.6mm]}, thick},
+  etq/.style={font=\footnotesize\bfseries, anchor=east, align=right, text width=17mm},
+  dim/.style={font=\scriptsize, text=black!60, anchor=north}]
+% --- CNN pequeña
+\node[etq] (l1) at (0,0) {CNN\\pequeña\\(1.2\,M)};
+\node[b=gray!10, right=2mm of l1] (c0) {Imagen\\$224{\times}224{\times}3$};
+\node[b=blue!8, right=of c0] (c1) {Bloque 1\\{[Conv$3{\times}3$-BN-ReLU]}$\times2$\\+ MaxPool, 32};
+\node[b=blue!8, right=of c1] (c2) {Bloque 2\\64};
+\node[b=blue!8, right=of c2] (c3) {Bloque 3\\128};
+\node[b=blue!8, right=of c3, line width=1.2pt] (c4) {Bloque 4\\256};
+\node[b=gray!10, right=of c4] (c5) {Pooling\\global};
+\node[b=green!10, right=of c5] (c6) {Dropout 0.3\\Lineal $\to$ 7};
+\foreach \a/\bb in {c0/c1,c1/c2,c2/c3,c3/c4,c4/c5,c5/c6} \draw[f] (\a) -- (\bb);
+\node[dim] at (c1.south) {$112^2$}; \node[dim] at (c2.south) {$56^2$};
+\node[dim] at (c3.south) {$28^2$}; \node[dim] at (c4.south) {$14^2$};
+% --- ResNet-50
+\node[etq] (l2) at (0,-2.0) {ResNet-50\\(23.5\,M)};
+\node[b=gray!10, right=2mm of l2] (r0) {Imagen\\$224{\times}224{\times}3$};
+\node[b=blue!8, right=of r0] (r1) {Conv $7{\times}7$/2, 64\\+ MaxPool};
+\node[b=blue!8, right=of r1] (r2) {Etapa 1\\3 bloques\\256};
+\node[b=blue!8, right=of r2] (r3) {Etapa 2\\4 bloques\\512};
+\node[b=blue!8, right=of r3] (r4) {Etapa 3\\6 bloques\\1024};
+\node[b=blue!8, right=of r4, line width=1.2pt] (r5) {Etapa 4\\3 bloques\\2048};
+\node[b=gray!10, right=of r5] (r6) {Pooling\\global};
+\node[b=green!10, right=of r6] (r7) {Dropout 0.2\\Lineal $\to$ 7};
+\foreach \a/\bb in {r0/r1,r1/r2,r2/r3,r3/r4,r4/r5,r5/r6,r6/r7} \draw[f] (\a) -- (\bb);
+\node[dim] at (r1.south) {$56^2$}; \node[dim] at (r2.south) {$56^2$}; \node[dim] at (r3.south) {$28^2$};
+\node[dim] at (r4.south) {$14^2$}; \node[dim] at (r5.south) {$7^2$};
+\node[b=white, right=6mm of r7, font=\scriptsize, minimum height=9mm] (bott) {Bloque cuello de botella:\\$1{\times}1 \to 3{\times}3 \to 1{\times}1$\\$\mathbf{y}=\mathcal{F}(\mathbf{x})+\mathbf{x}$};
+\draw[dashed, black!50] (r5.north east) -- (bott.north west);
+% --- ViT-S/16
+\node[etq] (l3) at (0,-4.0) {ViT-S/16\\(21.7\,M)};
+\node[b=gray!10, right=2mm of l3] (v0) {Imagen\\$224{\times}224{\times}3$};
+\node[b=orange!12, right=of v0] (v1) {196 parches\\$16{\times}16$};
+\node[b=orange!12, right=of v1] (v2) {Proyección lineal\\$\to d{=}384$\\+ [CLS] + posición};
+\node[b=orange!20, right=of v2, line width=1.2pt, text width=36mm] (v3) {Bloque Transformer $\times 12$:\\LN $\to$ MHSA (6 cabezas) $\to$ +\\LN $\to$ MLP (1536, GELU) $\to$ +};
+\node[b=gray!10, right=of v3] (v4) {LayerNorm\\token [CLS]};
+\node[b=green!10, right=of v4] (v5) {Dropout 0.2\\Lineal $\to$ 7};
+\foreach \a/\bb in {v0/v1,v1/v2,v2/v3,v3/v4,v4/v5} \draw[f] (\a) -- (\bb);
+\node[dim] at (v2.south) {$197{\times}384$}; \node[dim] at (v3.south) {$197{\times}384$};
+\end{tikzpicture}}
+\caption{Arquitecturas comparadas. Las cifras bajo cada caja son el tamaño espacial del mapa ($h{\times}w$) o de la secuencia de \textit{tokens}. El borde grueso marca la capa donde se calcula Grad-CAM. Los tres modelos terminan en una capa lineal de 7 salidas seguida de \textit{softmax}.}
+\label{fig:arquitecturas}
+\end{figure*}
+
+La Fig.~\ref{fig:arquitecturas} resume las tres redes.
+
 \textbf{Línea base clásica.} Un Random Forest~\cite{breiman2001rf} con 1\,834 descriptores por imagen:
 \begin{itemize}
 \item Histograma HSV de 48 dimensiones.
@@ -246,6 +308,20 @@ La Tabla~\ref{tab:abl} aísla el preentrenamiento manteniendo arquitectura, dato
 \item \textbf{ViT desde cero:} queda incluso por debajo de la CNN pequeña, que tiene 18 veces menos parámetros, y es el modelo más inestable entre semillas (DE 0.028).
 \item \textbf{ResNet desde cero:} supera levemente a la CNN pequeña (0.642 frente a 0.614).
 \end{itemize}
+
+Las curvas de entrenamiento (Fig.~\ref{fig:curvas}) muestran la misma diferencia en la dinámica:
+\begin{itemize}
+\item \textbf{Preentrenados:} superan 0.8 de macro-F1 de validación en menos de 5 épocas y se estabilizan cerca de 0.9. La pérdida de entrenamiento llega casi a cero, pero la validación no empeora; elegir la mejor época por validación evita usar un punto sobreajustado.
+\item \textbf{Desde cero:} a las 40 épocas la pérdida sigue bajando y la validación sigue subiendo. Con más épocas probablemente mejorarían, así que la ablación mide la ganancia del preentrenamiento \emph{con el mismo presupuesto de cómputo}, no su límite.
+\end{itemize}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.92\textwidth]{figs/curvas_entrenamiento.png}
+\caption{Curvas de entrenamiento (media y banda de $\pm1$ DE sobre 3 semillas). (a) Pérdida de entrenamiento. (b) Macro-F1 en validación. Línea continua: preentrenado (y CNN pequeña); discontinua: desde cero. Mismo color = misma arquitectura.}
+\label{fig:curvas}
+\end{figure*}
+
 Esto coincide con~\cite{dosovitskiy2021vit,touvron2021deit}: sin el sesgo inductivo de localidad, el Transformer necesita aprender desde los datos cómo se relacionan los parches vecinos, y 2\,112 imágenes no alcanzan.
 
 \begin{table}[t]
@@ -269,7 +345,7 @@ La Fig.~\ref{fig:conf} muestra la matriz de confusión del ViT preentrenado, sum
 \item \textbf{\textit{Phytophthora} $\to$ hongos:} 12\,\%.
 \item \textbf{Nematodos $\to$ hongos:} 17\,\%, con solo 10 imágenes de prueba.
 \end{itemize}
-Hongos es la clase más numerosa y la de síntomas más variados (manchas necróticas, clorosis), por lo que funciona como ``clase sumidero''. En el Random Forest, el 34\,\% de las fotos de plaga se clasifica como hongos. Además, el 11\,\% de las hojas sanas se confunde con virus, cuyos síntomas tempranos (mosaico leve) son sutiles a $224\times224$.
+Hongos es la clase más numerosa y la de síntomas más variados (manchas necróticas, clorosis), por lo que funciona como ``clase sumidero''. En el Random Forest, el 34\,\% de las fotos de plaga se clasifica como hongos. La propia auditoría apunta a una frontera ambigua: de los 6 pares de fotos idénticas con dos etiquetas, 5 involucran a plaga y 3 son exactamente hongos/plaga (notebook de exploración). Además, el 11\,\% de las hojas sanas se confunde con virus, cuyos síntomas tempranos (mosaico leve) son sutiles a $224\times224$.
 
 \begin{figure}[t]
 \centering
@@ -343,7 +419,20 @@ ViT-S/16 (cero) & T4 & 15.0 & 3 \\
 \subsection{Modelo final y demo}
 Elegimos como modelo final la corrida con mayor macro-F1 de \emph{validación}, sin mirar la prueba: ViT-S/16 preentrenado con semilla 2. Obtuvo 0.929 en validación y, en prueba, 0.864 de macro-F1 y 0.883 de exactitud.
 
-La demo se ejecuta en Colab o en local (Gradio). Recibe una foto, la recorta al centro y devuelve las 3 clases más probables con su confianza, el mapa Grad-CAM y una advertencia cuando la confianza es menor que 0.6.
+\textbf{App web.} Publicamos el modelo final en una aplicación web para celular, \url{https://agrotec-papa.vercel.app} (Fig.~\ref{fig:app}). Tiene tres pantallas: parcelas en un mapa satelital, diagnóstico e historial. El modelo corre \emph{en el navegador} con ONNX Runtime Web, sin servidor, y la foto no sale del dispositivo:
+\begin{itemize}
+\item \textbf{Exportación:} convertimos el ViT a ONNX y cuantizamos sus pesos a int8. El archivo pasa de 89 a 24\,MB y en prueba obtiene 0.864 de macro-F1 y 0.883 de exactitud, igual que el modelo original.
+\item \textbf{Grad-CAM sin gradientes:} el navegador no calcula gradientes. Por eso escribimos en el grafo el gradiente analítico del último bloque (cabeza, LayerNorm, MLP y atención del token [CLS]); el mapa coincide con el de PyTorch (error máximo $<10^{-5}$).
+\item \textbf{Salida:} la clase más probable con su confianza, las 3 más probables, el mapa Grad-CAM, una recomendación general y una advertencia cuando la confianza es menor que 0.6. Un diagnóstico tarda alrededor de 0.5\,s en una laptop.
+\end{itemize}
+También hay una demo en Colab y otra local con Gradio, con las mismas salidas.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.8\textwidth]{figs/app_web.jpg}
+\caption{App web con el modelo final (capturas en un celular). Izquierda: parcelas de papa en un mapa satelital; la parcela con un diagnóstico de enfermedad pasa a ``Alerta''. Centro: diagnóstico de una foto de prueba de rancha, con el mapa Grad-CAM y la confianza. Derecha: historial con calendario y el diagnóstico guardado.}
+\label{fig:app}
+\end{figure*}
 
 %=====================================================================
 \section{Discusión}
@@ -374,20 +463,20 @@ Como trabajo futuro proponemos:
 %=====================================================================
 \section*{Contribuciones}
 \begin{center}\small
-\begin{tabular}{p{0.32\columnwidth}p{0.58\columnwidth}}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.30\columnwidth}>{\raggedright\arraybackslash}p{0.60\columnwidth}}
 \toprule
 Integrante & Tareas en las que participó \\
 \midrule
-{[Nombre completo 1]} & {[p.\,ej. curación y auditoría de datos, partición, línea base]} \\
-{[Nombre completo 2]} & {[p.\,ej. implementación y entrenamiento de ResNet-50 y ViT, ablación]} \\
-{[Nombre completo 3]} & {[p.\,ej. Grad-CAM, análisis de errores, demo]} \\
-{[Nombre completo 4]} & {[p.\,ej. repositorio, redacción del artículo, diapositivas]} \\
+Gabriel Ángel Nizama Duque & Implementación y entrenamiento de la CNN pequeña, ResNet-50 y ViT-S/16 (3 semillas), ablación del preentrenamiento, selección del modelo final y app web \\
+Martín Alexis Valdiviezo Palma & Obtención y auditoría del conjunto de datos, eliminación de duplicados y partición 70/15/15 por grupos \\
+Juan José Pino Reyes & Línea base Random Forest, prueba de McNemar, Grad-CAM y análisis de errores \\
+César Luis Jiménez Miranda & Apoyo en la ejecución de las corridas desde cero en Colab, repositorio y documentación, redacción del artículo y diapositivas \\
 \bottomrule
 \end{tabular}
 \end{center}
 
 \section*{Disponibilidad y uso de herramientas}
-El código, la partición, las métricas de las 21 corridas, los pesos del modelo final y los notebooks de reproducción y demo están en \url{https://github.com/gabo2607/papa-cnn-vs-vit}. Cada tabla y figura se regenera con los comandos del README. Se usó un asistente de IA (Claude) como apoyo en programación y redacción; el equipo revisó y validó el diseño experimental, los resultados y el texto.
+El código, la partición, las métricas de las 21 corridas, los pesos del modelo final y los notebooks de reproducción y demo están en \url{https://github.com/gabo2607/papa-cnn-vs-vit}. La app web está en \url{https://agrotec-papa.vercel.app}. Cada tabla y figura se regenera con los comandos del README. Se usó un asistente de IA (Claude) como apoyo en programación y redacción; el equipo revisó y validó el diseño experimental, los resultados y el texto.
 
 \bibliographystyle{IEEEtran}
 \bibliography{refs}

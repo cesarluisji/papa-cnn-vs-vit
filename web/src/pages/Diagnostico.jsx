@@ -1,8 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { CLASES, INFO, META, UMBRAL_CONFIANZA, cargarModelo, cargarImagen, diagnosticar } from '../modelo';
+import { INFO, META, UMBRAL_CONFIANZA, cargarModelo, cargarImagen, diagnosticar } from '../modelo';
 import { loadParcelas, marcarParcela, comprimirImagen } from '../datos';
 
-const EJEMPLOS = CLASES.map(c => ({ clase: c, src: `/ejemplos/${c}.jpg` }));
 const pct = p => `${Math.round(p * 100)}%`;
 
 export default function Diagnostico() {
@@ -11,7 +10,6 @@ export default function Diagnostico() {
   const [parcelaOpen, setParcelaOpen] = useState(false);
   const [selectedParcelaId, setSelectedParcelaId] = useState(null);
   const [image, setImage] = useState(null);         // URL de la foto
-  const [ejemplo, setEjemplo] = useState(null);     // clase real si es foto de ejemplo
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [verMapa, setVerMapa] = useState(true);
@@ -48,17 +46,9 @@ export default function Diagnostico() {
     const file = e.target.files[0];
     if (file) {
       setImage(URL.createObjectURL(file));
-      setEjemplo(null);
       reiniciar();
     }
     e.target.value = '';
-  };
-
-  const usarEjemplo = (ej) => {
-    setImage(ej.src);
-    setEjemplo(ej.clase);
-    reiniciar();
-    analizar(ej.src);
   };
 
   const guardar = async () => {
@@ -88,7 +78,7 @@ export default function Diagnostico() {
     }
   };
 
-  const nuevoDiagnostico = () => { setImage(null); setEjemplo(null); reiniciar(); };
+  const nuevoDiagnostico = () => { setImage(null); reiniciar(); };
 
   const top = result?.top;
   const info = top ? INFO[top.clase] : null;
@@ -119,7 +109,7 @@ export default function Diagnostico() {
           </div>
         </div>
 
-        <input type="file" accept="image/*" capture="environment" ref={fileRef} onChange={handleImage} style={{ display: 'none' }} />
+        <input type="file" accept="image/*" ref={fileRef} onChange={handleImage} style={{ display: 'none' }} />
 
         {!image ? (
           <>
@@ -127,19 +117,6 @@ export default function Diagnostico() {
               <div className="icon">📷</div>
               <div className="title">Foto de la hoja de papa</div>
               <div className="sub">Tomar foto o subir desde galería · una hoja, de cerca</div>
-            </div>
-            <div className="section-label">O prueba con una foto de ejemplo</div>
-            <div className="crops-scroll" style={{ marginBottom: 12 }}>
-              {EJEMPLOS.map(ej => (
-                <div className="crop-circle" key={ej.clase} onClick={() => usarEjemplo(ej)}>
-                  <img src={ej.src} alt={INFO[ej.clase].nombre}
-                    style={{ width: 56, height: 56, borderRadius: 12, objectFit: 'cover', border: '2px solid var(--border-light)' }} />
-                  <span className="crop-label" style={{ maxWidth: 64 }}>{INFO[ej.clase].nombre}</span>
-                </div>
-              ))}
-            </div>
-            <div style={{ fontSize: 11, color: 'var(--text-tertiary)', marginBottom: 14 }}>
-              Fotos del conjunto de prueba: el modelo nunca las vio durante el entrenamiento.
             </div>
           </>
         ) : (
@@ -206,12 +183,6 @@ export default function Diagnostico() {
               </div>
               <div className="result-sub">Confianza: {pct(top.p)} · analizado en tu dispositivo en {result.ms} ms</div>
               <div className="result-sub" style={{ marginTop: 6 }}>{info.descripcion}</div>
-              {ejemplo && (
-                <div className="result-sub" style={{ marginTop: 6 }}>
-                  Etiqueta real de esta foto de ejemplo: <strong style={{ color: 'white' }}>{INFO[ejemplo].nombre}</strong>{' '}
-                  {ejemplo === top.clase ? '✅' : '❌'}
-                </div>
-              )}
             </div>
 
             <div className="card">

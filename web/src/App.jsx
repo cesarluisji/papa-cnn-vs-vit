@@ -6,7 +6,7 @@ import Historial from './pages/Historial';
 import { cargarModelo } from './modelo';
 
 export default function App() {
-  const [activePage, setActivePage] = useState('diagnostico');
+  const [activePage, setActivePage] = useState('parcelas');
 
   // El modelo (≈24 MB) empieza a descargarse apenas se abre la app, en cualquier pestaña
   useEffect(() => { cargarModelo().catch(() => {}); }, []);

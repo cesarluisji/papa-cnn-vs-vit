@@ -6,7 +6,7 @@ Clasificamos fotos de hojas de papa tomadas en campo en **7 clases**: bacteria, 
 - **Pregunta central:** con solo ~2,100 imágenes de entrenamiento, ¿rinde mejor una CNN (ResNet-50) o un Vision Transformer (ViT-S/16)?
 - **Pregunta secundaria:** ¿cuánto aporta el preentrenamiento en ImageNet?
 
-**App web (celular o PC): https://agrotec-papa.vercel.app**. Toma o sube una foto de una hoja de papa y el modelo final la diagnostica **dentro del navegador** (sin servidor): enfermedad, confianza, Grad-CAM y recomendación. Tiene 3 pantallas (Parcelas, Diagnóstico e Historial) y 7 fotos de ejemplo del conjunto de prueba. Código en [`web/`](web).
+**App web (celular o PC): https://agrotec-papa.vercel.app**. Toma o sube una foto de una hoja de papa y el modelo final la diagnostica **dentro del navegador** (sin servidor): enfermedad, confianza, Grad-CAM y recomendación. Tiene 3 pantallas: Parcelas, Diagnóstico e Historial. Para probarla, sube fotos de [`imagenes_prueba/`](imagenes_prueba): son 70 fotos del conjunto de prueba, 10 por clase. Código en [`web/`](web).
 
 **Demo en Colab:** [`notebooks/demo_colab.ipynb`](notebooks/demo_colab.ipynb) [![Abrir en Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/gabo2607/papa-cnn-vs-vit/blob/main/notebooks/demo_colab.ipynb). Descarga los pesos, clasifica fotos y muestra el Grad-CAM. No necesita el dataset ni GPU.
 
@@ -47,12 +47,15 @@ Tablas completas en [`results/tables/`](results/tables), figuras en [`results/fi
 │   ├── summarize.py       tablas (CSV/Markdown/LaTeX), McNemar, costo y figuras del artículo
 │   ├── gradcam.py         mapas Grad-CAM (aciertos por clase y errores)
 │   ├── select_final.py    elige el modelo final por validación → modelo_final/
+│   ├── figuras_paper.py   figuras del dataset y curvas de entrenamiento del artículo
 │   ├── export_onnx.py     exporta el modelo final a ONNX (int8, con Grad-CAM) para la app web
 │   └── demo_app.py        app web (Gradio): foto → enfermedad + confianza + Grad-CAM
 ├── configs/         hiperparámetros de cada modelo (YAML)
-├── notebooks/       demo_colab.ipynb (demo), entrenar_colab.ipynb (reproducir), ejecutados/ (corridas tal como se hicieron)
+├── notebooks/       exploracion_datos.ipynb (exploración), demo_colab.ipynb (demo), entrenar_colab.ipynb (reproducir),
+│                    ejecutados/ (corridas tal como se hicieron)
 ├── modelo_final/    config.json y meta.json del modelo final (los pesos se descargan del Release)
-├── demo/ejemplos/   1 foto de prueba por clase
+├── demo/ejemplos/   1 foto de prueba por clase (demo de Gradio)
+├── imagenes_prueba/ 70 fotos del test (10 por clase) para probar la app, con etiquetas.csv
 ├── web/             app web (Vite + React + onnxruntime-web) publicada en Vercel
 ├── paper/           artículo IEEE: main.tex + refs.bib + figs/ y el PDF compilado (paper.pdf)
 └── results/         una carpeta por corrida (config, historia, métricas, predicciones en test, matriz de confusión),
@@ -98,11 +101,22 @@ No hace falta reentrenar: las métricas y predicciones de las 21 corridas ya est
 ```bash
 python src/summarize.py        # results/tables/*  (resumen, ablación, F1 por clase, McNemar, costo, confusiones)
                                # results/figures/* (F1 por clase, matrices de confusión)
-python src/gradcam.py --runs results/papa_cnn_small_scratch_s2 results/papa_resnet50_pre_s1 results/papa_vit_small_pre_s2 \
-       --n_por_clase 2 --n_errores 8 --out results/gradcam     # requiere los best.pt (reentrenar o descargar)
 python src/select_final.py     # elige el modelo final por validación → modelo_final/
-python src/cam_stats.py        # concentración de los mapas Grad-CAM (Tabla V del artículo)
+python src/figuras_paper.py    # figuras del dataset y curvas de entrenamiento
 ```
+
+**Grad-CAM (Fig. 7 y Tabla V).** Necesita las imágenes (paso 2) y los pesos de las 3 corridas que se comparan. Los pesos están en el Release, así que no hace falta reentrenar:
+```bash
+U=https://github.com/gabo2607/papa-cnn-vs-vit/releases/download/modelo-final
+curl -L $U/papa_cnn_small_scratch_s2.pt -o results/papa_cnn_small_scratch_s2/best.pt
+curl -L $U/papa_resnet50_pre_s1.pt      -o results/papa_resnet50_pre_s1/best.pt
+curl -L $U/best.pt                      -o results/papa_vit_small_pre_s2/best.pt
+python src/gradcam.py --runs results/papa_cnn_small_scratch_s2 results/papa_resnet50_pre_s1 results/papa_vit_small_pre_s2 \
+       --n_por_clase 2 --n_errores 8 --out results/gradcam     # mapas → results/gradcam/ (+ cams.npz)
+python src/cam_stats.py        # concentración de los mapas (Tabla V) y figura de errores del artículo
+```
+
+**Exploración de los datos:** [`notebooks/exploracion_datos.ipynb`](notebooks/exploracion_datos.ipynb). Muestra el desbalance, la auditoría de duplicados, la verificación de que no hay fuga y ejemplos por clase.
 
 ### 5. Compilar el artículo
 ```bash
@@ -129,6 +143,8 @@ python src/demo_app.py --share   # además, enlace público temporal
 ## Pesos
 
 El modelo final (ViT-S/16, ≈83 MB) está publicado en el Release [`modelo-final`](https://github.com/gabo2607/papa-cnn-vs-vit/releases/tag/modelo-final). `src/demo_app.py` y el notebook de demo lo descargan solos. La versión ONNX para la app web está en `web/public/modelo/`.
+
+En el mismo Release están los pesos de las otras dos corridas que usa el Grad-CAM del artículo: `papa_cnn_small_scratch_s2.pt` (CNN pequeña) y `papa_resnet50_pre_s1.pt` (ResNet-50 preentrenada).
 
 ## Notas de cómputo
 

@@ -26,3 +26,10 @@ paper/build/
 *.synctex.gz
 *.bbl
 *.blg
+
+# app web
+web/node_modules/
+web/dist/
+web/.vercel/
+.vercel/
+modelo_final/*_fp32.onnx

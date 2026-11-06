@@ -6,6 +6,8 @@ Clasificamos fotos de hojas de papa tomadas en campo en **7 clases**: bacteria, 
 - **Pregunta central:** con solo ~2,100 imágenes de entrenamiento, ¿rinde mejor una CNN (ResNet-50) o un Vision Transformer (ViT-S/16)?
 - **Pregunta secundaria:** ¿cuánto aporta el preentrenamiento en ImageNet?
 
+**App web (celular o PC): https://agrotec-papa.vercel.app**. Toma o sube una foto de una hoja de papa y el modelo final la diagnostica **dentro del navegador** (sin servidor): enfermedad, confianza, Grad-CAM y recomendación. Tiene 3 pantallas (Parcelas, Diagnóstico e Historial) y 7 fotos de ejemplo del conjunto de prueba. Código en [`web/`](web).
+
 **Demo en Colab:** [`notebooks/demo_colab.ipynb`](notebooks/demo_colab.ipynb) [![Abrir en Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/gabo2607/papa-cnn-vs-vit/blob/main/notebooks/demo_colab.ipynb). Descarga los pesos, clasifica fotos y muestra el Grad-CAM. No necesita el dataset ni GPU.
 
 ## Resultados principales
@@ -45,11 +47,13 @@ Tablas completas en [`results/tables/`](results/tables), figuras en [`results/fi
 │   ├── summarize.py       tablas (CSV/Markdown/LaTeX), McNemar, costo y figuras del artículo
 │   ├── gradcam.py         mapas Grad-CAM (aciertos por clase y errores)
 │   ├── select_final.py    elige el modelo final por validación → modelo_final/
+│   ├── export_onnx.py     exporta el modelo final a ONNX (int8, con Grad-CAM) para la app web
 │   └── demo_app.py        app web (Gradio): foto → enfermedad + confianza + Grad-CAM
 ├── configs/         hiperparámetros de cada modelo (YAML)
 ├── notebooks/       demo_colab.ipynb (demo), entrenar_colab.ipynb (reproducir), ejecutados/ (corridas tal como se hicieron)
 ├── modelo_final/    config.json y meta.json del modelo final (los pesos se descargan del Release)
 ├── demo/ejemplos/   1 foto de prueba por clase
+├── web/             app web (Vite + React + onnxruntime-web) publicada en Vercel
 ├── paper/           artículo IEEE: main.tex + refs.bib + figs/ y el PDF compilado (paper.pdf)
 └── results/         una carpeta por corrida (config, historia, métricas, predicciones en test, matriz de confusión),
                      tables/, figures/, gradcam/, logs/
@@ -106,6 +110,17 @@ cd paper && pdflatex main && bibtex main && pdflatex main && pdflatex main
 ```
 
 ### 6. Demo
+**App web** (la publicada en https://agrotec-papa.vercel.app). Requiere Node.js 18+.
+```bash
+python src/export_onnx.py --evaluar   # best.pt → web/public/modelo/vit_papa_int8.onnx (ya está en el repo)
+cd web && npm install
+npm run dev                           # http://localhost:5173
+npm run build && vercel deploy --prod # publicar
+```
+- **Grad-CAM en el navegador.** El navegador no calcula gradientes, así que `export_onnx.py` escribe a mano el gradiente del último bloque del ViT dentro del grafo ONNX. El script comprueba que el mapa sea idéntico al de PyTorch.
+- **Cuantización int8.** El modelo pasa de 89 MB a 24 MB. En test da macro-F1 0.8642, frente a 0.8645 en fp32, con la misma accuracy (0.883).
+
+**Gradio** (local):
 ```bash
 python src/demo_app.py           # http://127.0.0.1:7860   (descarga los pesos la primera vez)
 python src/demo_app.py --share   # además, enlace público temporal
@@ -113,7 +128,7 @@ python src/demo_app.py --share   # además, enlace público temporal
 
 ## Pesos
 
-El modelo final (ViT-S/16, ≈83 MB) está publicado en el Release [`modelo-final`](https://github.com/gabo2607/papa-cnn-vs-vit/releases/tag/modelo-final). `src/demo_app.py` y el notebook de demo lo descargan solos.
+El modelo final (ViT-S/16, ≈83 MB) está publicado en el Release [`modelo-final`](https://github.com/gabo2607/papa-cnn-vs-vit/releases/tag/modelo-final). `src/demo_app.py` y el notebook de demo lo descargan solos. La versión ONNX para la app web está en `web/public/modelo/`.
 
 ## Notas de cómputo
 

@@ -58,6 +58,7 @@ Tablas completas en [`results/tables/`](results/tables), figuras en [`results/fi
 ├── imagenes_prueba/ 70 fotos del test (10 por clase) para probar la app, con etiquetas.csv
 ├── web/             app web (Vite + React + onnxruntime-web) publicada en Vercel
 ├── paper/           artículo IEEE: main.tex + refs.bib + figs/ y el PDF compilado (paper.pdf)
+├── presentacion/    diapositivas: presentacion.html → presentacion.pdf (python presentacion/build.py)
 └── results/         una carpeta por corrida (config, historia, métricas, predicciones en test, matriz de confusión),
                      tables/, figures/, gradcam/, logs/
 ```
@@ -154,7 +155,9 @@ En el mismo Release están los pesos de las otras dos corridas que usa el Grad-C
 
 ## Equipo
 
-Ver la sección *Contribuciones* del artículo.
+**Equipo 4, Sección A.** Gabriel Ángel Nizama Duque, Martín Alexis Valdiviezo Palma, Juan José Pino Reyes y César Luis Jiménez Miranda. Las tareas de cada uno están en la sección *Contribuciones* del artículo.
+
+**Entrega:** artículo [`paper/paper.pdf`](paper/paper.pdf), diapositivas [`presentacion/presentacion.pdf`](presentacion/presentacion.pdf) y versión entregada en la etiqueta [`v1.0-final`](https://github.com/gabo2607/papa-cnn-vs-vit/releases/tag/v1.0-final).
 
 ## Licencia y cita de los datos
 

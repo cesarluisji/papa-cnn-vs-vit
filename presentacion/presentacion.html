@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Enfermedades de la papa: ResNet-50 y ViT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<style>
+:root{
+  --uni:#70160f; --uni-soft:#f5eceb; --uni-line:#d9b9b5;
+  --gold:#d8c78f; --gold-2:#e6d9aa; --cream:#f6f1e2; --paper:#fafaf6; --rule:#e6e3db;
+  --ink:#1f1d1c; --ink-2:#5d5b5f; --ink-3:#9a999d; --white:#ffffff;
+  --head:"Futura","Jost","Century Gothic",sans-serif;
+  --body:"Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#d9d7d2}
+body{font-family:var(--body);color:var(--ink);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.slide{width:960px;height:540px;position:relative;overflow:hidden;background:var(--white);margin:24px auto;box-shadow:0 2px 14px rgba(0,0,0,.18)}
+@page{size:960px 540px;margin:0}
+@media print{html,body{background:var(--white)}.slide{margin:0;box-shadow:none;page-break-after:always;break-after:page}}
+
+.hdr{position:absolute;left:47px;right:47px;top:16px;height:44px}
+.hdr img{position:absolute;left:0;top:2px;width:32px}
+.hdr .uni{position:absolute;left:42px;top:5px;font:700 9.5px var(--head);letter-spacing:.42em;color:var(--ink-3)}
+.hdr .line{position:absolute;left:42px;right:0;top:20px;border-top:1px solid var(--uni)}
+.hdr .sec{position:absolute;left:42px;top:27px;font:700 10.5px var(--head);letter-spacing:.04em;color:var(--ink)}
+.hdr .who{position:absolute;right:0;top:28px;font:700 8.5px var(--head);letter-spacing:.14em;color:var(--uni)}
+.num{position:absolute;right:47px;bottom:14px;font:700 8.5px var(--head);letter-spacing:.14em;color:var(--ink-3)}
+.body{position:absolute;left:48px;right:48px;top:74px;bottom:34px}
+h2{font:700 24px/1.15 var(--head);color:var(--ink);margin-bottom:6px}
+.ask{font-size:12.5px;font-style:italic;color:var(--ink-2);margin-bottom:12px;padding-left:10px;border-left:3px solid var(--gold)}
+.lead{font-size:15px;line-height:1.4;margin-bottom:12px}
+.small{font-size:11.5px;color:var(--ink-2);line-height:1.4}
+.cap{font:700 9px var(--head);letter-spacing:.12em;color:var(--uni);text-transform:uppercase;margin:0 0 3px}
+
+.row{display:flex;gap:12px}
+.col{display:flex;flex-direction:column;gap:10px}
+.stat{flex:1;background:var(--cream);border-top:3px solid var(--gold);padding:10px 14px 11px}
+.stat .v{font:700 26px/1 var(--head);color:var(--ink)}
+.stat .l{font-size:11.5px;color:var(--ink-2);margin-top:6px;line-height:1.3}
+.stat.hi{background:var(--uni);border-top-color:var(--uni)}
+.stat.hi .v,.stat.hi .l{color:var(--white)}
+.card{flex:1;background:var(--paper);border:1px solid var(--rule);border-top:3px solid var(--gold);padding:9px 13px 11px}
+.card h3{font:700 13.5px var(--head);margin-bottom:4px}
+.card p,.card li{font-size:12.3px;line-height:1.4}
+.card ul,.card ol{padding-left:16px}
+.card.alert{background:var(--uni-soft);border-color:#ecd9d6;border-top-color:var(--uni)}
+.card.alert h3{color:var(--uni)}
+
+table{width:100%;border-collapse:collapse;font-size:12.3px}
+th{font:700 8.5px var(--head);letter-spacing:.13em;color:var(--uni);text-transform:uppercase;text-align:left;padding:5px 7px;border-bottom:1px solid var(--uni-line)}
+td{padding:5px 7px;border-bottom:1px solid var(--rule);line-height:1.28}
+td.c,th.c{text-align:center}
+tr.hl td{background:var(--cream);font-weight:700}
+tr.pub td{color:var(--ink-2);font-style:italic}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:1px}
+
+.fig{display:block;max-width:100%}
+.kicker{font:700 10px var(--head);letter-spacing:.32em;color:var(--uni)}
+.concl{display:flex;gap:14px;align-items:baseline;margin-bottom:8px}
+.concl .n{font:700 16px var(--head);color:var(--uni);width:24px;flex:none}
+.concl .t{font:400 13px/1.35 var(--body)}
+.eq{font-size:14px;margin:6px 0 4px;text-align:center;white-space:nowrap}
+.eq.sm{font-size:12.5px}
+.thumbs{display:flex;gap:8px;margin-bottom:12px}
+.thumbs div{flex:1;text-align:center}
+.thumbs img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;border:1px solid var(--rule)}
+.thumbs span{display:block;font:700 10px var(--head);color:var(--ink-2);margin-top:4px;letter-spacing:.02em}
+
+.cover .left{position:absolute;left:0;top:0;bottom:0;width:292px;background:var(--uni)}
+.cover .left::after{content:"";position:absolute;right:0;top:0;bottom:0;width:7px;background:var(--gold-2)}
+.cover .left img{position:absolute;left:73px;top:130px;width:140px}
+.cover .left .name{position:absolute;left:0;right:7px;top:340px;text-align:center;font:700 17px/1.45 var(--head);letter-spacing:.42em;color:var(--white)}
+.cover .txt{position:absolute;left:350px;right:60px;top:92px}
+.cover h1{font:700 29px/1.13 var(--head);margin:14px 0 12px}
+.cover .sub{font-size:15px;line-height:1.4;color:var(--ink-2)}
+.cover hr{border:0;border-top:1.5px solid var(--uni);margin:18px 0 15px}
+.cover .authors{display:grid;grid-template-columns:1fr 1fr;row-gap:9px;font-size:14px}
+.cover .meta{margin-top:18px;font:700 9px/2 var(--head);letter-spacing:.14em;color:var(--ink-2)}
+.cover .meta .r{color:var(--uni)}
+</style>
+</head>
+<body>
+
+<!-- 1 · PORTADA -->
+<section class="slide cover">
+  <div class="left"><img src="img/logo_portada.png" alt="Escudo UNI"><div class="name">UNIVERSIDAD<br>NACIONAL DE<br>INGENIERIA</div></div>
+  <div class="txt">
+    <div class="kicker">REDES NEURONALES · MIA-203 · EXAMEN FINAL</div>
+    <h1>Detección de enfermedades de la papa con aprendizaje profundo: comparación de ResNet-50 y Vision Transformer con imágenes de campo</h1>
+    <div class="sub">Auditoría del dataset, ablación del preentrenamiento, Grad-CAM y una app web con el modelo final</div>
+    <hr>
+    <div class="authors"><span>Gabriel Ángel Nizama Duque</span><span>Martín Alexis Valdiviezo Palma</span><span>Juan José Pino Reyes</span><span>César Luis Jiménez Miranda</span></div>
+    <div class="meta"><span class="r">EQUIPO 4</span> &nbsp;<span class="r">/</span>&nbsp; SECCIÓN A &nbsp;<span class="r">/</span>&nbsp; NOVIEMBRE DE 2026<br>MAESTRÍA EN INTELIGENCIA ARTIFICIAL &nbsp;<span class="r">/</span>&nbsp; UNIDAD DE POSGRADO FIIS<br><span class="r">GITHUB.COM/GABO2607/PAPA-CNN-VS-VIT &nbsp;·&nbsp; AGROTEC-PAPA.VERCEL.APP</span></div>
+  </div>
+  <div class="num">1 / 17</div>
+</section>
+
+<!-- 2 · PROBLEMA -->
+<section class="slide" data-sec="Problema" data-who="MOTIVACIÓN">
+  <div class="body">
+    <h2>El problema: diagnosticar la papa con fotos de campo</h2>
+    <p class="lead">La rancha, las virosis y las plagas reducen la cosecha si no se detectan a tiempo, y el diagnóstico depende de especialistas que no siempre llegan al campo. Un clasificador de fotos en el celular puede servir de <b>alerta temprana</b>.</p>
+    <div class="thumbs">
+      <div><img src="img/ej_bacteria.jpg" alt=""><span>Bacteria</span></div>
+      <div><img src="img/ej_fungi.jpg" alt=""><span>Hongos</span></div>
+      <div><img src="img/ej_healthy.jpg" alt=""><span>Sana</span></div>
+      <div><img src="img/ej_nematode.jpg" alt=""><span>Nematodos</span></div>
+      <div><img src="img/ej_pest.jpg" alt=""><span>Plaga</span></div>
+      <div><img src="img/ej_phytophthora.jpg" alt=""><span><i>Phytophthora</i></span></div>
+      <div><img src="img/ej_virus.jpg" alt=""><span>Virus</span></div>
+    </div>
+    <div class="row">
+      <div class="stat"><div class="v">3,076</div><div class="l">fotos tomadas en campo (Java Central, Indonesia)</div></div>
+      <div class="stat"><div class="v">7</div><div class="l">clases: 6 problemas + hoja sana</div></div>
+      <div class="stat"><div class="v">11×</div><div class="l">desbalance: hongos 740 frente a nematodos 67</div></div>
+      <div class="stat hi"><div class="v">0.68–0.74</div><div class="l">exactitud publicada en este dataset (Shabrina et al., 2024)</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 · PREGUNTA Y CONTRIBUCIONES -->
+<section class="slide" data-sec="Problema" data-who="PREGUNTA Y CONTRIBUCIONES">
+  <div class="body">
+    <h2>Pregunta de investigación y contribuciones</h2>
+    <div class="row" style="gap:20px;align-items:flex-start">
+      <div class="col" style="flex:1">
+        <div class="card alert"><h3>¿CNN o Vision Transformer con pocos datos?</h3><p>Con solo <b>~2,100 fotos de entrenamiento</b> y 7 clases desbalanceadas, ¿rinde mejor una CNN (<b>ResNet-50</b>) o un Transformer (<b>ViT-S/16</b>)? ¿Y cuánto depende el resultado del <b>preentrenamiento en ImageNet</b>?</p></div>
+        <div class="card"><h3>¿Por qué aprendizaje profundo?</h3><p>Los síntomas cambian de forma, color y tamaño, y las fotos traen fondos variados. Un Random Forest con descriptores manuales de color y textura llega solo a <b>0.464</b> de macro-F1.</p></div>
+        <div class="card"><h3>¿Por qué no es obvio?</h3><p>El ViT supera a las CNN cuando hay millones de imágenes, pero no tiene el sesgo de <b>localidad</b> de la convolución: con pocos datos podría fallar.</p></div>
+      </div>
+      <div style="flex:1.1">
+        <div class="cap" style="margin-bottom:8px">Contribuciones</div>
+        <div class="concl"><div class="n">01</div><div class="t"><b>Auditoría del dataset público:</b> 55 pares de fotos duplicadas, 6 con etiquetas contradictorias, y partición por grupos sin fuga.</div></div>
+        <div class="concl"><div class="n">02</div><div class="t"><b>Comparación controlada:</b> 6 configuraciones × 3 semillas, macro-F1 y prueba de McNemar.</div></div>
+        <div class="concl"><div class="n">03</div><div class="t"><b>Ablación del preentrenamiento:</b> aporta +0.355 de macro-F1 al ViT y +0.201 a la ResNet.</div></div>
+        <div class="concl"><div class="n">04</div><div class="t"><b>Interpretabilidad y despliegue:</b> Grad-CAM con medida de concentración, y una app web que corre el modelo final en el celular.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 · TRABAJOS RELACIONADOS -->
+<section class="slide" data-sec="Fundamento" data-who="TRABAJOS RELACIONADOS">
+  <div class="body">
+    <h2>Trabajos relacionados</h2>
+    <table style="margin-top:6px">
+      <tr><th style="width:205px">Trabajo</th><th>Qué hace</th><th style="width:270px">Qué hacemos distinto</th></tr>
+      <tr><td><b>He et al., 2016</b> · ResNet</td><td>Conexiones residuales: permiten entrenar CNN muy profundas</td><td>Es nuestra CNN de referencia</td></tr>
+      <tr><td><b>Dosovitskiy et al., 2021</b> · ViT</td><td>Transformer sobre parches de 16×16; supera a las CNN con muchos datos</td><td>Lo probamos con ~2,100 fotos de campo</td></tr>
+      <tr><td><b>Touvron 2021; Steiner 2022</b></td><td>La regularización y el preentrenamiento compensan la falta de datos del ViT</td><td>Lo medimos con una ablación controlada</td></tr>
+      <tr><td><b>Mohanty 2016; Ferentinos 2018</b></td><td>Más de 99 % en PlantVillage (fotos de laboratorio); advierten que cae en campo</td><td>Usamos solo fotos de campo</td></tr>
+      <tr class="hl"><td><b>Shabrina et al., 2024</b></td><td>Publican el dataset; ResNet-50 0.682 y EfficientNetV2-B3 0.736 de exactitud, 1 corrida</td><td>Deduplicamos, 3 semillas, comparamos con ViT</td></tr>
+      <tr><td><b>Selvaraju 2017</b> · Grad-CAM</td><td>Mapas de las regiones que deciden la clase</td><td>Añadimos una medida de concentración</td></tr>
+      <tr><td><b>Geirhos et al., 2020</b></td><td>Aprendizaje por atajos: decidir por pistas espurias del fondo</td><td>Lo detectamos en la CNN pequeña</td></tr>
+    </table>
+    <p class="small" style="margin-top:8px">El artículo cita 21 referencias, verificadas en Crossref. Ninguno de los trabajos sobre papa controla duplicados entre particiones, reporta varias semillas ni compara con Transformers.</p>
+  </div>
+</section>
+
+<!-- 5 · ARQUITECTURAS -->
+<section class="slide" data-sec="Fundamento" data-who="ARQUITECTURAS">
+  <div class="body">
+    <h2>Dos formas de mirar una imagen: convolución y autoatención</h2>
+    <svg width="864" height="194" viewBox="0 0 864 194" role="img" aria-label="Arquitecturas" style="display:block;margin:4px 0 10px">
+      <style>.b{fill:#f6f1e2;stroke:#d8c78f}.bk{fill:#f6f1e2;stroke:#70160f;stroke-width:2}.bd{fill:#70160f}.g{fill:#fafaf6;stroke:#e6e3db}.t{font:600 11px Jost,Futura,sans-serif;fill:#1f1d1c}.tw{font:600 11px Jost,Futura,sans-serif;fill:#fff}.lb{font:700 12px Jost,Futura,sans-serif;fill:#70160f}.s{font:10px Helvetica,Arial,sans-serif;fill:#9a999d}.ar{stroke:#5d5b5f;stroke-width:1.2;fill:none;marker-end:url(#a)}</style>
+      <defs><marker id="a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L8 4L0 8z" fill="#5d5b5f"/></marker></defs>
+      <text class="s" x="864" y="9" text-anchor="end">borde granate = capa donde se calcula Grad-CAM</text>
+      <text class="lb" x="0" y="32">ResNet-50</text><text class="s" x="0" y="46">23.5 M parámetros</text>
+      <rect class="g" x="96" y="16" width="70" height="38"/><text class="t" x="131" y="32" text-anchor="middle">Imagen</text><text class="t" x="131" y="46" text-anchor="middle">224×224</text>
+      <rect class="b" x="182" y="16" width="86" height="38"/><text class="t" x="225" y="32" text-anchor="middle">Conv 7×7/2</text><text class="t" x="225" y="46" text-anchor="middle">+ MaxPool</text>
+      <rect class="b" x="284" y="16" width="74" height="38"/><text class="t" x="321" y="32" text-anchor="middle">Etapa 1</text><text class="t" x="321" y="46" text-anchor="middle">3 bl. · 256</text>
+      <rect class="b" x="374" y="16" width="74" height="38"/><text class="t" x="411" y="32" text-anchor="middle">Etapa 2</text><text class="t" x="411" y="46" text-anchor="middle">4 bl. · 512</text>
+      <rect class="b" x="464" y="16" width="74" height="38"/><text class="t" x="501" y="32" text-anchor="middle">Etapa 3</text><text class="t" x="501" y="46" text-anchor="middle">6 bl. · 1024</text>
+      <rect class="bk" x="554" y="16" width="74" height="38"/><text class="t" x="591" y="32" text-anchor="middle">Etapa 4</text><text class="t" x="591" y="46" text-anchor="middle">3 bl. · 2048</text>
+      <rect class="g" x="644" y="16" width="70" height="38"/><text class="t" x="679" y="32" text-anchor="middle">Pooling</text><text class="t" x="679" y="46" text-anchor="middle">global</text>
+      <rect class="bd" x="730" y="16" width="86" height="38"/><text class="tw" x="773" y="32" text-anchor="middle">Lineal → 7</text><text class="tw" x="773" y="46" text-anchor="middle">clases</text>
+      <path class="ar" d="M166 35H180"/><path class="ar" d="M268 35H282"/><path class="ar" d="M358 35H372"/><path class="ar" d="M448 35H462"/><path class="ar" d="M538 35H552"/><path class="ar" d="M628 35H642"/><path class="ar" d="M714 35H728"/>
+      <text class="s" x="321" y="66" text-anchor="middle">56²</text><text class="s" x="411" y="66" text-anchor="middle">28²</text><text class="s" x="501" y="66" text-anchor="middle">14²</text><text class="s" x="591" y="66" text-anchor="middle">7²</text>
+      <text class="lb" x="0" y="104">ViT-S/16</text><text class="s" x="0" y="118">21.7 M parámetros</text>
+      <rect class="g" x="96" y="88" width="70" height="38"/><text class="t" x="131" y="104" text-anchor="middle">Imagen</text><text class="t" x="131" y="118" text-anchor="middle">224×224</text>
+      <rect class="b" x="182" y="88" width="86" height="38"/><text class="t" x="225" y="104" text-anchor="middle">196 parches</text><text class="t" x="225" y="118" text-anchor="middle">16×16</text>
+      <rect class="b" x="284" y="88" width="120" height="38"/><text class="t" x="344" y="104" text-anchor="middle">Proyección → 384</text><text class="t" x="344" y="118" text-anchor="middle">+ [CLS] + posición</text>
+      <rect class="bk" x="420" y="82" width="208" height="50"/><text class="t" x="524" y="99" text-anchor="middle">12 bloques Transformer</text><text class="t" x="524" y="113" text-anchor="middle">autoatención (6 cabezas) + MLP</text><text class="s" x="524" y="126" text-anchor="middle">cada parche mira a todos</text>
+      <rect class="g" x="644" y="88" width="70" height="38"/><text class="t" x="679" y="104" text-anchor="middle">Token</text><text class="t" x="679" y="118" text-anchor="middle">[CLS]</text>
+      <rect class="bd" x="730" y="88" width="86" height="38"/><text class="tw" x="773" y="104" text-anchor="middle">Lineal → 7</text><text class="tw" x="773" y="118" text-anchor="middle">clases</text>
+      <path class="ar" d="M166 107H180"/><path class="ar" d="M268 107H282"/><path class="ar" d="M404 107H418"/><path class="ar" d="M628 107H642"/><path class="ar" d="M714 107H728"/>
+      <text class="lb" x="0" y="168">CNN pequeña</text><text class="s" x="0" y="182">1.2 M · desde cero</text>
+      <rect class="g" x="96" y="152" width="70" height="38"/><text class="t" x="131" y="168" text-anchor="middle">Imagen</text><text class="t" x="131" y="182" text-anchor="middle">224×224</text>
+      <rect class="b" x="182" y="152" width="356" height="38"/><text class="t" x="360" y="168" text-anchor="middle">4 bloques [Conv 3×3 – BN – ReLU] × 2 + MaxPool</text><text class="t" x="360" y="182" text-anchor="middle">anchos 32 → 64 → 128 → 256</text>
+      <rect class="g" x="644" y="152" width="70" height="38"/><text class="t" x="679" y="168" text-anchor="middle">Pooling</text><text class="t" x="679" y="182" text-anchor="middle">global</text>
+      <rect class="bd" x="730" y="152" width="86" height="38"/><text class="tw" x="773" y="168" text-anchor="middle">Lineal → 7</text><text class="tw" x="773" y="182" text-anchor="middle">clases</text>
+      <path class="ar" d="M166 171H180"/><path class="ar" d="M538 171H642"/><path class="ar" d="M714 171H728"/>
+    </svg>
+    <div class="row">
+      <div class="card"><h3>CNN: localidad</h3><p>Filtros pequeños que recorren la imagen; cada bloque aprende un residuo:</p><div class="eq sm" data-tex="\mathbf{y}=\mathcal{F}(\mathbf{x},\{W_i\})+\mathbf{x}"></div><p>Sabe desde el inicio que los píxeles vecinos se relacionan.</p></div>
+      <div class="card"><h3>ViT: atención global</h3><p>Cada parche se relaciona con todos los demás desde la primera capa:</p><div class="eq sm" data-tex="\mathrm{Att}(Q,K,V)=\mathrm{softmax}\!\left(\tfrac{QK^\top}{\sqrt{d_h}}\right)V"></div><p>Más flexible, pero debe <b>aprender</b> la localidad de los datos.</p></div>
+      <div class="card alert"><h3>Pesos preentrenados (timm)</h3><p><b>ResNet-50:</b> resnet50.a1_in1k<br><b>ViT-S/16:</b> augreg_in21k_ft_in1k<br>Cambiamos la cabeza a 7 clases y ajustamos <b>todos</b> los parámetros.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 6 · DATOS -->
+<section class="slide" data-sec="Datos" data-who="AUDITORÍA Y PARTICIÓN SIN FUGA">
+  <div class="body">
+    <h2>Datos: auditoría del dataset y partición sin fuga</h2>
+    <div class="row" style="margin-bottom:12px">
+      <div class="stat"><div class="v">110</div><div class="l">fotos en 55 pares de duplicados exactos (sha256)</div></div>
+      <div class="stat hi"><div class="v">12</div><div class="l">fotos con <b>etiqueta contradictoria</b>: la misma foto en dos clases</div></div>
+      <div class="stat"><div class="v">64</div><div class="l">fotos en 32 grupos de casi-duplicados (dHash ≤ 4)</div></div>
+      <div class="stat"><div class="v">3,015</div><div class="l">fotos finales, tras eliminar 12 contradictorias y 49 copias</div></div>
+    </div>
+    <div class="row" style="gap:18px;align-items:flex-start">
+      <div class="col" style="flex:none;width:350px">
+        <table>
+          <tr><th>Partición 70/15/15</th><th class="c">Fotos</th><th>Uso</th></tr>
+          <tr><td>Entrenamiento</td><td class="c">2,112</td><td>aprender</td></tr>
+          <tr><td>Validación</td><td class="c">450</td><td>elegir época y modelo</td></tr>
+          <tr class="hl"><td>Prueba</td><td class="c">453</td><td>medir <b>una sola vez</b></td></tr>
+        </table>
+        <div class="card alert"><h3>Sin fuga de datos</h3><p>Partimos <b>por grupos</b>: las fotos casi idénticas caen juntas en una sola partición. Verificado: <b>0</b> grupos, sha256 o dHash repetidos entre particiones.</p></div>
+      </div>
+      <div style="flex:1">
+        <img class="fig" src="img/dataset.png" alt="Ejemplos y distribución por clase" style="width:100%">
+        <p class="small" style="margin-top:4px">Pista para después: 5 de los 6 pares contradictorios involucran a <b>plaga</b>, y 3 son exactamente <b>hongos / plaga</b>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 7 · ENTRENAMIENTO -->
+<section class="slide" data-sec="Metodología" data-who="PÉRDIDA Y ENTRENAMIENTO">
+  <div class="body">
+    <h2>Metodología: pérdida y entrenamiento</h2>
+    <div class="row" style="gap:16px;align-items:flex-start">
+      <div class="col" style="flex:1.05">
+        <div class="card"><h3>Entropía cruzada ponderada (contra el desbalance)</h3>
+          <div class="eq" data-tex="\mathcal{L}=-\frac{\sum_{i} w_{y_i}\log p_{i,y_i}}{\sum_i w_{y_i}},\qquad w_k=\frac{1/n_k}{\frac{1}{K}\sum_j 1/n_j}"></div>
+          <p>Las clases raras pesan más: <b>nematodos 3.5</b>, hongos 0.32.</p></div>
+        <div class="card"><h3>Optimización</h3><p><b>AdamW</b>, lote 32, <b>40 épocas</b>, <i>warmup</i> de 2 épocas y luego decaimiento coseno; recorte de gradiente a norma 1; precisión mixta (fp16) en ResNet y ViT.</p></div>
+        <div class="card"><h3>Aumento de datos</h3><p>Recorte aleatorio (escala 0.6–1), volteos, rotación ±20° y variación de brillo, contraste, saturación y tono.</p></div>
+      </div>
+      <div class="col" style="flex:1">
+        <table>
+          <tr><th>Modelo</th><th class="c">lr pre / cero</th><th class="c">Weight decay</th><th class="c">Parámetros</th></tr>
+          <tr><td>CNN pequeña</td><td class="c">— / 10⁻³</td><td class="c">0.01</td><td class="c">1.2 M</td></tr>
+          <tr><td>ResNet-50</td><td class="c">3×10⁻⁴ / 10⁻³</td><td class="c">0.05</td><td class="c">23.5 M</td></tr>
+          <tr><td>ViT-S/16</td><td class="c">10⁻⁴ / 5×10⁻⁴</td><td class="c">0.05</td><td class="c">21.7 M</td></tr>
+        </table>
+        <div class="card alert"><h3>Selección sin mirar la prueba</h3><p>La mejor época de cada corrida y el modelo final se eligen por <b>macro-F1 de validación</b>. La prueba se evalúa <b>una sola vez</b>, al final.</p></div>
+        <div class="card"><h3>Reproducible</h3><p>Semillas fijadas (0, 1, 2; partición con 42). Cada tabla y figura del artículo se regenera con un comando del README.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 8 · DISEÑO EXPERIMENTAL -->
+<section class="slide" data-sec="Metodología" data-who="DISEÑO EXPERIMENTAL">
+  <div class="body">
+    <h2>Diseño experimental: 6 modelos × 3 semillas = 18 corridas</h2>
+    <div class="row" style="gap:18px;align-items:flex-start">
+      <div style="flex:1.35">
+        <table>
+          <tr><th>Modelo</th><th>Tipo</th><th>Para qué está</th></tr>
+          <tr><td><span class="dot" style="background:#2a78d6"></span><b>Random Forest</b> (color + HOG + LBP)</td><td>Clásico</td><td>Línea base 1: sin aprendizaje profundo</td></tr>
+          <tr><td><span class="dot" style="background:#eb6834"></span><b>CNN pequeña</b> (desde cero)</td><td>CNN simple</td><td>Línea base 2: la red más simple</td></tr>
+          <tr class="hl"><td><span class="dot" style="background:#1baf7a"></span>ResNet-50 preentrenada</td><td>CNN profunda</td><td>Comparación principal</td></tr>
+          <tr class="hl"><td><span class="dot" style="background:#eda100"></span>ViT-S/16 preentrenado</td><td>Transformer</td><td>Comparación principal</td></tr>
+          <tr><td><b>ResNet-50 desde cero</b></td><td>CNN profunda</td><td>Ablación: efecto del preentrenamiento</td></tr>
+          <tr><td><b>ViT-S/16 desde cero</b></td><td>Transformer</td><td>Ablación: efecto del preentrenamiento</td></tr>
+        </table>
+        <p class="small" style="margin-top:6px">Mismas particiones, mismas épocas y mismos hiperparámetros; en la ablación solo cambia el preentrenamiento (y la tasa de aprendizaje).</p>
+      </div>
+      <div class="col" style="flex:1">
+        <div class="card"><h3>Métricas</h3><p><b>Macro-F1</b> (principal: da el mismo peso a cada clase), exactitud balanceada y exactitud. Reportamos <b>media ± DE</b> sobre 3 semillas.</p></div>
+        <div class="card"><h3>Prueba estadística</h3><p><b>McNemar exacto</b>, ResNet vs. ViT con la misma semilla: cuenta las fotos que solo acierta uno u otro modelo.</p><div class="eq" data-tex="b\sim\mathrm{Binomial}\!\left(b+c,\tfrac12\right)"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 9 · RESULTADOS -->
+<section class="slide" data-sec="Resultados" data-who="LÍNEA BASE Y COMPARACIÓN">
+  <div class="body">
+    <h2>Resultados en prueba (453 fotos nunca vistas)</h2>
+    <div class="row" style="gap:18px;align-items:flex-start">
+      <div style="flex:1.45">
+        <table>
+          <tr><th>Modelo</th><th class="c">Macro-F1</th><th class="c">Exact. bal.</th><th class="c">Exactitud</th></tr>
+          <tr><td><span class="dot" style="background:#2a78d6"></span>Random Forest</td><td class="c">0.464 ± 0.021</td><td class="c">0.452 ± 0.014</td><td class="c">0.558 ± 0.010</td></tr>
+          <tr><td><span class="dot" style="background:#eb6834"></span>CNN pequeña (cero)</td><td class="c">0.614 ± 0.011</td><td class="c">0.661 ± 0.004</td><td class="c">0.630 ± 0.009</td></tr>
+          <tr><td>ResNet-50 (cero)</td><td class="c">0.642 ± 0.007</td><td class="c">0.687 ± 0.013</td><td class="c">0.659 ± 0.003</td></tr>
+          <tr><td>ViT-S/16 (cero)</td><td class="c">0.499 ± 0.028</td><td class="c">0.550 ± 0.019</td><td class="c">0.497 ± 0.029</td></tr>
+          <tr><td><span class="dot" style="background:#1baf7a"></span>ResNet-50 (preentrenada)</td><td class="c">0.843 ± 0.012</td><td class="c">0.845 ± 0.011</td><td class="c">0.855 ± 0.005</td></tr>
+          <tr class="hl"><td><span class="dot" style="background:#eda100"></span>ViT-S/16 (preentrenado)</td><td class="c">0.853 ± 0.013</td><td class="c">0.849 ± 0.008</td><td class="c">0.869 ± 0.016</td></tr>
+          <tr class="pub"><td>ResNet-50 · Shabrina 2024</td><td class="c">—</td><td class="c">—</td><td class="c">0.682</td></tr>
+          <tr class="pub"><td>EfficientNetV2-B3 · Shabrina 2024</td><td class="c">—</td><td class="c">—</td><td class="c">0.736</td></tr>
+        </table>
+        <p class="small" style="margin-top:6px">Media ± DE sobre 3 semillas. En cursiva, lo publicado: partición 90/10 sin deduplicar y 1 corrida, así que la comparación es solo orientativa.</p>
+      </div>
+      <div class="col" style="flex:1">
+        <div class="stat hi"><div class="v">0.853</div><div class="l">macro-F1 del ViT-S/16 preentrenado: el mejor promedio</div></div>
+        <div class="stat"><div class="v">+0.39</div><div class="l">del ViT preentrenado sobre el Random Forest; +0.24 sobre la CNN pequeña</div></div>
+        <div class="card"><h3>Variabilidad baja</h3><p>Los preentrenados varían ≤ 0.013 entre semillas: el resultado no depende de la suerte.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 10 · CNN vs ViT -->
+<section class="slide" data-sec="Resultados" data-who="CNN FRENTE A ViT">
+  <div class="body">
+    <h2>CNN frente a ViT: sin diferencia significativa</h2>
+    <div class="row" style="gap:18px;align-items:flex-start">
+      <div style="flex:none;width:540px">
+        <img class="fig" src="img/f1_por_clase.png" alt="F1 por clase" style="width:540px">
+        <p class="small" style="margin-top:4px">F1 por clase en prueba (media y DE, 3 semillas). Los preentrenados dominan en todas las clases.</p>
+      </div>
+      <div class="col" style="flex:1">
+        <table>
+          <tr><th>Semilla</th><th class="c">Solo ResNet</th><th class="c">Solo ViT</th><th class="c">p</th></tr>
+          <tr><td>0</td><td class="c">20</td><td class="c">27</td><td class="c">0.38</td></tr>
+          <tr><td>1</td><td class="c">24</td><td class="c">25</td><td class="c">1.00</td></tr>
+          <tr><td>2</td><td class="c">20</td><td class="c">31</td><td class="c">0.16</td></tr>
+        </table>
+        <div class="card alert"><h3>Ninguna p &lt; 0.05</h3><p>El ViT supera a la ResNet por solo <b>0.010</b>, menos que la variación entre semillas. No prueba que sean equivalentes, pero con estos datos <b>la arquitectura pesa poco</b>.</p></div>
+        <div class="card"><h3>Se reparten las clases</h3><p>ViT gana en <i>Phytophthora</i> (0.87 vs. 0.80) y hongos; ResNet en virus (0.88 vs. 0.86) y nematodos.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 11 · ABLACIÓN -->
+<section class="slide" data-sec="Resultados" data-who="ABLACIÓN DEL PREENTRENAMIENTO">
+  <div class="body">
+    <h2>Ablación: el preentrenamiento decide, sobre todo en el ViT</h2>
+    <div class="row" style="margin-bottom:10px">
+      <div class="stat hi"><div class="v">+0.355</div><div class="l">macro-F1 que gana el ViT con preentrenamiento (0.499 → 0.853)</div></div>
+      <div class="stat"><div class="v">+0.201</div><div class="l">macro-F1 que gana la ResNet (0.642 → 0.843)</div></div>
+      <div class="stat"><div class="v">0.499</div><div class="l">ViT desde cero: <b>peor</b> que la CNN pequeña (0.614), con 18× más parámetros</div></div>
+    </div>
+    <img class="fig" src="img/curvas_entrenamiento.png" alt="Curvas de entrenamiento" style="width:700px;margin:0 auto">
+    <p class="small" style="margin-top:4px;text-align:center">Línea continua: preentrenado (y CNN pequeña); discontinua: desde cero. Los preentrenados pasan 0.8 en menos de 5 épocas. Los entrenados desde cero <b>seguían mejorando</b> a las 40 épocas: la ablación compara con el mismo presupuesto de cómputo.</p>
+  </div>
+</section>
+
+<!-- 12 · ERRORES -->
+<section class="slide" data-sec="Interpretación" data-who="ANÁLISIS DE ERRORES">
+  <div class="body">
+    <h2>¿En qué se equivoca? Todo cae en “hongos”</h2>
+    <div class="row" style="gap:20px;align-items:flex-start">
+      <img class="fig" src="img/confusion_vit_small_pre.png" alt="Matriz de confusión del ViT" style="width:330px;flex:none">
+      <div class="col" style="flex:1">
+        <div class="row" style="gap:10px">
+          <div class="stat hi"><div class="v">14 %</div><div class="l">de las fotos de plaga → hongos (ResNet: 11 %)</div></div>
+          <div class="stat"><div class="v">12 %</div><div class="l"><i>Phytophthora</i> → hongos</div></div>
+          <div class="stat"><div class="v">17 %</div><div class="l">nematodos → hongos (solo 10 fotos)</div></div>
+        </div>
+        <div class="card"><h3>Hongos, la “clase sumidero”</h3><p>Es la clase más numerosa y la de síntomas más variados (manchas necróticas, clorosis): cuando el modelo duda, elige hongos. En el Random Forest, el 34 % de las fotos de plaga se va a hongos.</p></div>
+        <div class="card alert"><h3>El propio dataset los confunde</h3><p>De los 6 pares de fotos idénticas con dos etiquetas, <b>5 involucran a plaga</b> y 3 son exactamente <b>hongos / plaga</b>: la frontera es ambigua incluso para quienes etiquetaron.</p></div>
+        <p class="small">También: el 11 % de las hojas sanas se confunde con virus, cuyo mosaico temprano es sutil a 224×224.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 13 · GRAD-CAM -->
+<section class="slide" data-sec="Interpretación" data-who="GRAD-CAM">
+  <div class="body">
+    <h2>Grad-CAM: ¿dónde mira cada modelo?</h2>
+    <div class="row" style="gap:18px;align-items:flex-start">
+      <img class="fig" src="img/gradcam_errores.jpg" alt="Mapas Grad-CAM" style="height:396px;flex:none">
+      <div class="col" style="flex:1">
+        <div class="eq" style="margin:0" data-tex="\alpha_k^c=\tfrac{1}{Z}\sum_{i,j}\tfrac{\partial y^c}{\partial A^k_{ij}},\quad L^c=\mathrm{ReLU}\Big(\sum_k \alpha_k^c A^k\Big)"></div>
+        <table>
+          <tr><th>Modelo</th><th class="c">Masa top-10 %</th><th class="c">Masa central</th></tr>
+          <tr><td>CNN pequeña</td><td class="c">0.37 ± 0.18</td><td class="c">0.34 ± 0.13</td></tr>
+          <tr class="hl"><td>ResNet-50</td><td class="c">0.50 ± 0.11</td><td class="c">0.61 ± 0.18</td></tr>
+          <tr><td>ViT-S/16</td><td class="c">0.29 ± 0.11</td><td class="c">0.27 ± 0.11</td></tr>
+          <tr><td><i>Mapa uniforme</i></td><td class="c"><i>0.10</i></td><td class="c"><i>0.25</i></td></tr>
+        </table>
+        <div class="card"><h3>ResNet concentrada; ViT disperso</h3><p>La ResNet marca la mancha (fila 3: <i>Phytophthora</i>). El ViT reparte el mapa, coherente con su atención global; Grad-CAM es menos fiel en Transformers.</p></div>
+        <div class="card alert"><h3>CNN pequeña: atajos del fondo</h3><p>Acierta “bacteria” mirando el <b>plástico de cobertura</b>, no la hoja (fila 1).</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 14 · COSTO -->
+<section class="slide" data-sec="Costo" data-who="COSTO COMPUTACIONAL (R6)">
+  <div class="body">
+    <h2>Costo computacional y hardware</h2>
+    <div class="row" style="margin-bottom:12px">
+      <div class="stat hi"><div class="v">≈ 5.9 h</div><div class="l">de GPU en total: las 15 corridas de redes neuronales</div></div>
+      <div class="stat"><div class="v">~15 min</div><div class="l">por corrida de ResNet o ViT en una Tesla T4 (Colab)</div></div>
+      <div class="stat"><div class="v">40 min</div><div class="l">por corrida de la CNN pequeña en la laptop (GTX 1650 Ti, 4 GB)</div></div>
+    </div>
+    <div class="row" style="gap:18px;align-items:flex-start">
+      <div style="flex:1.2">
+        <table>
+          <tr><th>Modelo</th><th>Hardware</th><th class="c">min / corrida</th><th class="c">Corridas</th></tr>
+          <tr><td>Random Forest</td><td>CPU</td><td class="c">1.8</td><td class="c">3</td></tr>
+          <tr><td>CNN pequeña</td><td>GTX 1650 Ti</td><td class="c">40.1</td><td class="c">3</td></tr>
+          <tr><td>ResNet-50 (pre)</td><td>GTX 1650 Ti / T4</td><td class="c">65.9 / 15.8</td><td class="c">1 / 2</td></tr>
+          <tr><td>ResNet-50 (cero)</td><td>T4</td><td class="c">15.9</td><td class="c">3</td></tr>
+          <tr><td>ViT-S/16 (pre)</td><td>T4</td><td class="c">14.4</td><td class="c">3</td></tr>
+          <tr><td>ViT-S/16 (cero)</td><td>T4</td><td class="c">15.0</td><td class="c">3</td></tr>
+        </table>
+      </div>
+      <div class="col" style="flex:1">
+        <div class="card alert"><h3>Incidente en la laptop</h3><p>En la GTX 1650 Ti, la precisión mixta (fp16) hizo colapsar la validación a una sola clase. La CNN pequeña entrena en fp32 y una semilla de la ResNet se repitió en la T4. Está declarado en el artículo.</p></div>
+        <div class="card"><h3>Reproducible en Colab</h3><p>Todo el entrenamiento principal cabe en una T4 gratuita; los pesos están publicados para no reentrenar.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 15 · MODELO FINAL Y APP -->
+<section class="slide" data-sec="Demo" data-who="MODELO FINAL Y APP WEB">
+  <div class="body">
+    <h2>Modelo final en una app web para el celular</h2>
+    <div class="row" style="gap:18px;align-items:flex-start">
+      <div style="flex:none;width:470px">
+        <img class="fig" src="img/app_web.jpg" alt="Capturas de la app" style="width:470px">
+        <p class="small" style="margin-top:4px">Parcelas en mapa satelital · diagnóstico con Grad-CAM · historial. Interfaz basada en AGROTEC, un prototipo de uno de los autores.</p>
+      </div>
+      <div class="col" style="flex:1">
+        <div class="row" style="gap:10px">
+          <div class="stat hi"><div class="v">0.864</div><div class="l">macro-F1 en prueba · ViT-S/16, semilla 2</div></div>
+          <div class="stat"><div class="v">88.3 %</div><div class="l">exactitud en prueba</div></div>
+        </div>
+        <div class="card"><h3>Elegido sin mirar la prueba</h3><p>Mayor macro-F1 de <b>validación</b> (0.929) entre las 18 corridas.</p></div>
+        <div class="card"><h3>Corre en el navegador, sin servidor</h3><p>ONNX cuantizado a int8: <b>89 → 24 MB</b>, misma macro-F1. La foto no sale del dispositivo; ~0.5 s por diagnóstico. Grad-CAM con el gradiente escrito dentro del grafo.</p></div>
+        <div class="card alert"><h3>agrotec-papa.vercel.app</h3><p>Muestra la clase, la confianza, las 3 más probables, el Grad-CAM y un <b>aviso si la confianza es menor de 60 %</b>.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 16 · DISCUSIÓN -->
+<section class="slide" data-sec="Discusión" data-who="LIMITACIONES, SESGOS E IMPACTO">
+  <div class="body">
+    <h2>Discusión: limitaciones, sesgos y uso responsable</h2>
+    <div class="card" style="margin-bottom:10px;flex:none"><h3>¿Por qué gana el preentrenamiento y no la arquitectura?</h3><p>Con 2,112 fotos, lo aprendido en ImageNet (bordes, texturas, partes de objetos) vale más que el sesgo de cada arquitectura. Ese sesgo solo importa sin preentrenamiento: la convolución aporta localidad “gratis”, por eso la ResNet desde cero resiste mejor que el ViT.</p></div>
+    <div class="row">
+      <div class="card alert"><h3>Limitaciones y sesgos</h3><ul>
+        <li><b>Geográfica:</b> todas las fotos son de Indonesia; no sabemos cómo rinde con papa andina.</li>
+        <li><b>Clases pequeñas:</b> nematodos tiene 10 fotos de prueba; su F1 es incierto.</li>
+        <li><b>Brecha validación–prueba:</b> 0.929 → 0.864, por elegir con validación.</li>
+        <li><b>Etiquetas:</b> el dataset trae fotos con dos clases.</li></ul></div>
+      <div class="card"><h3>Uso responsable</h3><ul>
+        <li>Es una herramienta de <b>apoyo</b>: no reemplaza al agrónomo.</li>
+        <li>Un error puede llevar a un fungicida innecesario o a no tratar una plaga a tiempo.</li>
+        <li>Por eso mostramos la confianza, el Grad-CAM y un aviso si es baja.</li>
+        <li>Antes de usarlo en el Perú hay que validarlo con fotos locales.</li></ul></div>
+      <div class="card"><h3>Impacto</h3><ul>
+        <li>Diagnóstico en segundos, desde un celular, <b>sin servidor y sin costo</b> por consulta.</li>
+        <li>La foto no sale del dispositivo: protege los datos del agricultor.</li>
+        <li>El método (auditoría, ablación, Grad-CAM) se puede repetir con fotos peruanas.</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- 17 · CONCLUSIONES -->
+<section class="slide" data-sec="Conclusiones" data-who="CONCLUSIONES Y TRABAJO FUTURO">
+  <div class="body">
+    <h2>Conclusiones y trabajo futuro</h2>
+    <div class="row" style="gap:22px;align-items:flex-start">
+      <div style="flex:1.25">
+        <div class="concl"><div class="n">01</div><div class="t">Con preentrenamiento, <b>ResNet-50 y ViT-S/16 no muestran diferencia significativa</b> (macro-F1 0.843 y 0.853) y superan con amplitud a las líneas base.</div></div>
+        <div class="concl"><div class="n">02</div><div class="t">Con pocos datos, <b>el preentrenamiento importa más que la arquitectura</b>: +0.355 en el ViT, +0.201 en la ResNet.</div></div>
+        <div class="concl"><div class="n">03</div><div class="t">Auditar el dataset fue clave: había duplicados con etiquetas contradictorias que habrían inflado el resultado.</div></div>
+        <div class="concl"><div class="n">04</div><div class="t">Grad-CAM muestra que la ResNet mira la lesión y que una red pequeña puede apoyarse en <b>atajos del fondo</b>.</div></div>
+        <div class="concl"><div class="n">05</div><div class="t">El modelo final corre en el celular: <b>macro-F1 0.864 y 88.3 %</b> de exactitud en prueba.</div></div>
+      </div>
+      <div class="col" style="flex:1">
+        <div class="card"><h3>Trabajo futuro</h3><ul>
+          <li>Recolectar fotos de papa peruana y medir la transferencia de dominio.</li>
+          <li>Probar explicaciones propias de Transformers.</li>
+          <li>Más épocas para los modelos desde cero.</li>
+          <li>Funcionamiento sin internet en la app.</li></ul></div>
+        <div style="font:700 26px var(--head);color:var(--uni);margin-top:4px">Gracias.</div>
+        <p class="small"><b>Código, datos y pesos:</b> github.com/gabo2607/papa-cnn-vs-vit<br><b>App:</b> agrotec-papa.vercel.app</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  var slides=document.querySelectorAll(".slide"), N=slides.length;
+  slides.forEach(function(s,i){
+    if(s.dataset.sec){
+      var h=document.createElement("div"); h.className="hdr";
+      h.innerHTML='<img src="img/logo_header.png" alt=""><div class="uni">UNIVERSIDAD NACIONAL DE INGENIERIA</div><div class="line"></div><div class="sec"></div><div class="who"></div>';
+      h.querySelector(".sec").textContent=s.dataset.sec;
+      h.querySelector(".who").textContent="EXAMEN FINAL · "+(s.dataset.who||"");
+      s.prepend(h);
+      var n=document.createElement("div"); n.className="num"; n.textContent=(i+1)+" / "+N; s.appendChild(n);
+    } else { var c=s.querySelector(".num"); if(c) c.textContent="1 / "+N; }
+  });
+  if(window.katex){
+    document.querySelectorAll("[data-tex]").forEach(function(el){
+      katex.render(el.dataset.tex, el, {throwOnError:false, displayMode:false});
+    });
+  }
+})();
+</script>
+</body>
+</html>

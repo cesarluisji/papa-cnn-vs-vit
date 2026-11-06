@@ -34,3 +34,5 @@ web/.vercel/
 .vercel/
 modelo_final/*_fp32.onnx
 paper/main.pdf
+Pregunta2_Presentacion.pdf
+entrega/

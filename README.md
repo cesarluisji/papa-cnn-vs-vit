@@ -1,4 +1,4 @@
-# Enfermedades en hojas de papa: CNN vs Vision Transformer con pocos datos
+# Detección de enfermedades de la papa en imágenes de campo: ResNet-50 frente a Vision Transformer con pocos datos
 
 Proyecto final de **MIA-203 Redes Neuronales y Aprendizaje Profundo** (Maestría en IA, UNI FIIS).
 
@@ -97,7 +97,7 @@ done
 En Colab: [`notebooks/entrenar_colab.ipynb`](notebooks/entrenar_colab.ipynb).
 
 ### 4. Regenerar tablas, figuras y Grad-CAM del artículo
-No hace falta reentrenar: las métricas y predicciones de las 21 corridas ya están en `results/`.
+No hace falta reentrenar: las métricas y predicciones de las 18 corridas ya están en `results/`.
 ```bash
 python src/summarize.py        # results/tables/*  (resumen, ablación, F1 por clase, McNemar, costo, confusiones)
                                # results/figures/* (F1 por clase, matrices de confusión)

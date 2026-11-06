@@ -18,8 +18,9 @@
 
 \begin{document}
 
-\title{CNN frente a Vision Transformer con pocos datos:\\
-detección de enfermedades en hojas de papa fotografiadas en campo}
+\title{Detección de enfermedades de la papa\\
+en imágenes de campo: ResNet-50 frente a\\
+Vision Transformer con pocos datos}
 
 \author{\IEEEauthorblockN{Gabriel Ángel Nizama Duque, Martín Alexis Valdiviezo Palma,\\ Juan José Pino Reyes, César Luis Jiménez Miranda}
 \IEEEauthorblockA{Maestría en Inteligencia Artificial, Unidad de Posgrado FIIS\\
@@ -388,7 +389,7 @@ Mapa uniforme (referencia) & 0.10 & 0.25 \\
 \end{table}
 
 \subsection{Costo computacional}
-Usamos dos equipos: Google Colab (Tesla T4, 16\,GB) y una laptop con GeForce GTX 1650 Ti de 4\,GB. Las 21 corridas suman $\approx$5.9\,h de GPU (Tabla~\ref{tab:cost}).
+Usamos dos equipos: Google Colab (Tesla T4, 16\,GB) y una laptop con GeForce GTX 1650 Ti de 4\,GB. Las 15 corridas de redes neuronales suman $\approx$5.9\,h de GPU; el Random Forest corre en CPU (Tabla~\ref{tab:cost}).
 \begin{itemize}
 \item \textbf{En la T4:} una corrida de 40 épocas tarda $\approx$15\,min, con un pico de memoria de 1.5\,GB (ViT) y 1.8\,GB (ResNet).
 \item \textbf{En la laptop:} la misma corrida de ResNet tarda 66\,min. En esa GPU, la precisión mixta fp16 produjo colapsos (la validación predecía una sola clase), por lo que la CNN pequeña se entrenó en fp32 y las semillas 1 y 2 de la ResNet preentrenada se entrenaron en la T4.
@@ -476,7 +477,7 @@ César Luis Jiménez Miranda & Apoyo en la ejecución de las corridas desde cero
 \end{center}
 
 \section*{Disponibilidad y uso de herramientas}
-El código, la partición, las métricas de las 21 corridas, los pesos del modelo final y los notebooks de reproducción y demo están en \url{https://github.com/gabo2607/papa-cnn-vs-vit}. La app web está en \url{https://agrotec-papa.vercel.app}. Cada tabla y figura se regenera con los comandos del README. Se usó un asistente de IA (Claude) como apoyo en programación y redacción; el equipo revisó y validó el diseño experimental, los resultados y el texto.
+El código, la partición, las métricas de las 18 corridas, los pesos del modelo final y los notebooks de reproducción y demo están en \url{https://github.com/gabo2607/papa-cnn-vs-vit}. La app web está en \url{https://agrotec-papa.vercel.app}. Cada tabla y figura se regenera con los comandos del README. Se usó un asistente de IA (Claude) como apoyo en programación y redacción; el equipo revisó y validó el diseño experimental, los resultados y el texto.
 
 \bibliographystyle{IEEEtran}
 \bibliography{refs}

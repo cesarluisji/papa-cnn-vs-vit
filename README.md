@@ -1,4 +1,4 @@
-# Detección de enfermedades de la papa en imágenes de campo: ResNet-50 frente a Vision Transformer con pocos datos
+# Detección de enfermedades de la papa con aprendizaje profundo: comparación de ResNet-50 y Vision Transformer con imágenes de campo
 
 Proyecto final de **MIA-203 Redes Neuronales y Aprendizaje Profundo** (Maestría en IA, UNI FIIS).
 

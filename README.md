@@ -149,7 +149,7 @@ En el mismo Release están los pesos de las otras dos corridas que usa el Grad-C
 
 ## Notas de cómputo
 
-- **Hardware:** Google Colab (Tesla T4) y una laptop con GTX 1650 Ti de 4 GB. Costo total ≈ 6 h de GPU (`results/tables/costo_gpu.csv`).
+- **Hardware:** La semilla 0 de la ResNet-50 preentrenada se entrenó en una GPU local (GTX 1650 Ti, 4 GB) y las semillas 1 y 2 en Google Colab (Tesla T4, 16 GB). La brecha entre validación y prueba (~0.04 a 0.07 en todos los modelos) responde tanto a la dificultad intrínseca de la partición de prueba como al criterio de selección de época por validación. Costo total ≈ 6 h de GPU (`results/tables/costo_gpu.csv`).
 - **CNN pequeña sin fp16:** en la GTX 1650 Ti, la precisión mixta (fp16) hacía colapsar el entrenamiento, por eso esta red entrena en fp32 (`amp: false`).
 - **ResNet-50 preentrenada, semilla 1:** en la GTX 1650 Ti la validación colapsó a una sola clase, así que se repitió en la T4. La semilla 0 de este modelo es de la laptop; las semillas 1 y 2, de la T4.
 
